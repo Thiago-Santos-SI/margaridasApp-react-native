@@ -19,8 +19,8 @@ import {isDeclaredPredicate} from '@babel/types';
 
 export default function Main() {
   const [input, setInput] = useState('');
-  const [inputQuantidade, setInputQuantidade] = useState('');
-  const [inputPrice, setInputPrice] = useState('');
+  const [inputQuantidade, setInputQuantidade] = useState(0);
+  const [inputPrice, setInputPrice] = useState(0);
 
 
   const [error, setError] = useState('');
@@ -48,8 +48,8 @@ export default function Main() {
   async function handleAddRepository() {
       await saveRepository(input, inputQuantidade, inputPrice);
       setInput('');
-      setInputQuantidade('');
-      setInputPrice('');
+      setInputQuantidade(0);
+      setInputPrice(0);
       setError(false);
       Keyboard.dismiss();
    // } catch (err) {
@@ -61,7 +61,7 @@ export default function Main() {
   async function handleDelRepository(repository) {
     Alert.alert(
       'Atenção!',
-      `Deseja excluir o repositório "${repository.name}"?`,
+      `Deseja excluir o Material "${repository.name}"?`,
       [
         {
           text: 'Confirmar',
@@ -121,7 +121,7 @@ export default function Main() {
             placeholder="Quantidade comprada"
             value={`${inputQuantidade}`}
             editable={!loading}
-            onChangeText={number => setInputQuantidade(number)}
+            onChangeText={text => setInputQuantidade(Number(text))}
             keyboardShouldPersistTaps="handle"
             keyboardType="numeric"
 
@@ -136,7 +136,7 @@ export default function Main() {
             placeholder="Preço que comprou"
             value={`${inputPrice}`}
             editable={!loading}
-            onChangeText={number => setInputPrice(number)}
+            onChangeText={text => setInputPrice(Number(text))}
             keyboardShouldPersistTaps="handle"
             keyboardType="numeric"
 

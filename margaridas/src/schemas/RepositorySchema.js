@@ -5,8 +5,8 @@ export default class RepositorySchema {
     properties: {
       id: {type: 'int'},
       name: 'string',
-      quantidade: {type:'string', optional: true},
-      price: {type:'string', optional: true}
+      quantidade: {type:'int', optional: true},
+      price: {type:'int', optional: true}
     },
   };
 }

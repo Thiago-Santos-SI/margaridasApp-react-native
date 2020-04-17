@@ -9,6 +9,8 @@ export default function Routes() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+                <Stack.Screen name="CalculaScreen" component={Main} />
+
                 <Stack.Screen name="HomeScreen" component={Main} />
             </Stack.Navigator>
         </NavigationContainer>

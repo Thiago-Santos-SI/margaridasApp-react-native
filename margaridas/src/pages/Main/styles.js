@@ -27,6 +27,14 @@ export const Form = styled.View`
   padding: 0 20px;
 `;
 
+export const Form2 = styled.View`
+  flex-direction: row;
+  margin-top: 10px;
+  padding: 0 20px;
+    justify-content: center;
+
+`;
+
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`

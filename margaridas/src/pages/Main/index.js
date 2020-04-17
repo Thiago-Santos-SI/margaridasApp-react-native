@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert} from 'react-native';
+import {Keyboard, Alert, View, Button} from 'react-native';
 import {
   Container,
   Title,
@@ -9,6 +9,7 @@ import {
   IconAdd,
   List,
   Loading,
+  Form2
 } from './styles';
 import Repository from '../../components/repository/index';
 
@@ -18,22 +19,26 @@ import {isDeclaredPredicate} from '@babel/types';
 
 export default function Main() {
   const [input, setInput] = useState('');
+  const [inputQuantidade, setInputQuantidade] = useState('');
+  const [inputPrice, setInputPrice] = useState('');
+
+
   const [error, setError] = useState('');
   const [loading, setloading] = useState(false);
   const [repositories, setRepositories] = useState('');
 
-  async function saveRepository(valueInput) {
+  async function saveRepository(valueInputName, valueInputQuant, valueInputPrice) {
     const realm = await getRealm();
-    const id = realm.objects('Repository').sorted('id', true).length > 0
+    const ID = realm.objects('Repository').sorted('id', true).length > 0
         ? realm.objects('Repository').sorted('id', true)[0]
         .id + 1
         : 1;
-
     const data = {
-      id,
-      name: valueInput,
+      id: ID,
+      name: valueInputName,
+      quantidade: valueInputQuant,
+      price: valueInputPrice,
     };
-
     realm.write(() => {
       realm.create('Repository', data, 'modified');
     });
@@ -41,24 +46,16 @@ export default function Main() {
   }
 
   async function handleAddRepository() {
-
-    setloading(true);
-   // try {
-
-      // const response = await api.get(`/repos/${input}`);
-      await saveRepository(input);
+      await saveRepository(input, inputQuantidade, inputPrice);
       setInput('');
+      setInputQuantidade('');
+      setInputPrice('');
       setError(false);
       Keyboard.dismiss();
-  //  } catch (err) {
+   // } catch (err) {
      // setError(true);
-   // }
-    setloading(false);
-  }
-
-  async function handleAdd(){
-    console.tron.log(input);
-    //console.log(input)
+    //}
+    //setloading(false);
   }
 
   async function handleDelRepository(repository) {
@@ -103,23 +100,54 @@ export default function Main() {
 
   return (
     <Container>
-      <Title>Repositórios</Title>
-
+      <Title>Materiais</Title>
       <Form>
         <Input
-          autocCapitalize="none"
-          autoCorrect={false}
-          error={error}
-          placeholder="Procurar repositório..."
-          value={input}
-          editable={!loading}
-          onChangeText={setInput}
-          keyboardShouldPersistTaps="handle"
+            autocCapitalize="none"
+            autoCorrect={false}
+            error={error}
+            placeholder="Nome material"
+            value={input}
+            editable={!loading}
+            onChangeText={(input) =>setInput(input)}
+            keyboardShouldPersistTaps="handle"
         />
-        <Submit onPress={handleAddRepository}>
-          {loading ? <Loading /> : <IconAdd />}
-        </Submit>
       </Form>
+      <Form>
+        <Input
+            autocCapitalize="none"
+            autoCorrect={false}
+            error={error}
+            placeholder="Quantidade comprada"
+            value={`${inputQuantidade}`}
+            editable={!loading}
+            onChangeText={number => setInputQuantidade(number)}
+            keyboardShouldPersistTaps="handle"
+            keyboardType="numeric"
+
+
+        />
+      </Form>
+      <Form>
+        <Input
+            autocCapitalize="none"
+            autoCorrect={false}
+            error={error}
+            placeholder="Preço que comprou"
+            value={`${inputPrice}`}
+            editable={!loading}
+            onChangeText={number => setInputPrice(number)}
+            keyboardShouldPersistTaps="handle"
+            keyboardType="numeric"
+
+        />
+      </Form>
+      <Form2>
+        <Button title="Adicionar" onPress={handleAddRepository}>
+          {loading ? <Loading /> : <Button
+              title=""/>}
+        </Button>
+      </Form2>
 
       <List
         keyboardShouldPersistTaps="handle"
@@ -133,9 +161,12 @@ export default function Main() {
           />
         )}
       />
+
+
     </Container>
   );
 }
+
 
 Main.navigationOptions = {
   title: 'HomeScreen',

@@ -3,10 +3,10 @@ export default class RepositorySchema {
     name: 'Repository',
     primaryKey: 'id',
     properties: {
-      id: {type: 'int', indexed: true},
+      id: {type: 'int'},
       name: 'string',
-      quantidade: 'int',
-      price: 'int'
+      quantidade: {type:'string', optional: true},
+      price: {type:'string', optional: true}
     },
   };
 }

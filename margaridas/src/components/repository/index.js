@@ -21,6 +21,8 @@ import {
 const repository = ({data, onRefresh, deleteItem}) => (
   <Container>
     <Name>{data.name}</Name>
+    <Name>{data.quantidade}</Name>
+    <Name>{data.price}</Name>
 
     <ContainerIcons>
       <ContainerButtons style={styles.a}>

@@ -6,7 +6,9 @@ export default class RepositorySchema {
       id: {type: 'int'},
       name: 'string',
       quantidade: {type:'int', optional: true},
-      price: {type:'int', optional: true}
+      price: {type:'float', optional: true},
+      unidade: 'string'
     },
   };
+
 }

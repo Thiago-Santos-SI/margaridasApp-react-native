@@ -21,6 +21,7 @@ export const Title = styled.Text`
   padding: 0px 20px;
 `;
 
+
 export const Form = styled.View`
   flex-direction: row;
   margin-top: 10px;

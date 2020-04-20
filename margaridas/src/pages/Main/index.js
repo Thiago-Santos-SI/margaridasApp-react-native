@@ -12,32 +12,53 @@ import {
   Form2
 } from './styles';
 import Repository from '../../components/repository/index';
+import {Picker} from '@react-native-community/picker';
+import { metro, centimetro } from '../../schemas/unidade'
 
-import api from '../../services/api';
 import getRealm from '../../services/realm';
 import {isDeclaredPredicate} from '@babel/types';
 
 export default function Main() {
   const [input, setInput] = useState('');
-  const [inputQuantidade, setInputQuantidade] = useState(0);
-  const [inputPrice, setInputPrice] = useState(0);
-
+  const [inputQuantidade, setInputQuantidade] = useState('');
+  const [inputPrice, setInputPrice] = useState('');
+  //const [inputMetro, setInputMetro] = useState('');
+  //const [inputCentimetro, setInputCentimetro] = useState('');
+  const [selectedValue, setSelectedValue] = useState('metro');
 
   const [error, setError] = useState('');
   const [loading, setloading] = useState(false);
   const [repositories, setRepositories] = useState('');
 
-  async function saveRepository(valueInputName, valueInputQuant, valueInputPrice) {
+  /*
+  async function saveUnidade(valuePickerMetro){
+      const realm = await getRealm();
+      realm.write(() => {
+          const data = {
+              metro: valuePickerMetro,
+              centimetro: valuePickerMetro
+          };
+          realm.create('Unidade', data);
+      });
+      return data
+  }
+   */
+
+
+  async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
     const realm = await getRealm();
+    //auto-increment
     const ID = realm.objects('Repository').sorted('id', true).length > 0
         ? realm.objects('Repository').sorted('id', true)[0]
         .id + 1
         : 1;
     const data = {
-      id: ID,
-      name: valueInputName,
-      quantidade: valueInputQuant,
-      price: valueInputPrice,
+        id: ID,
+        name: valueInputName,
+        quantidade: valueInputQuant,
+        price: valueInputPrice,
+        unidade: valuePicker
+
     };
     realm.write(() => {
       realm.create('Repository', data, 'modified');
@@ -46,16 +67,17 @@ export default function Main() {
   }
 
   async function handleAddRepository() {
-      await saveRepository(input, inputQuantidade, inputPrice);
-      setInput('');
-      setInputQuantidade(0);
-      setInputPrice(0);
-      setError(false);
-      Keyboard.dismiss();
-   // } catch (err) {
-     // setError(true);
-    //}
-    //setloading(false);
+      try {
+          await saveRepository(input, inputQuantidade, inputPrice, selectedValue);
+          setInput('');
+          setInputQuantidade('');
+          setInputPrice('');
+          setError(false);
+          Keyboard.dismiss();
+      } catch (err) {
+          setError(true);
+        }
+     //setloading(false);
   }
 
   async function handleDelRepository(repository) {
@@ -81,6 +103,7 @@ export default function Main() {
     );
   }
 
+  /*
   async function handleRefreshRepository(dados_repo) {
     const response = await api.get(`/repos/${dados_repo.fullName}`);
     const data = await saveRepository(response.data);
@@ -88,6 +111,7 @@ export default function Main() {
       repositories.map(repo => (repo.id == data.id ? data : repo)),
     );
   }
+   */
 
   useEffect(() => {
     async function loadRepository() {
@@ -99,7 +123,9 @@ export default function Main() {
   }, []);
 
   return (
+
     <Container>
+
       <Title>Materiais</Title>
       <Form>
         <Input
@@ -114,7 +140,7 @@ export default function Main() {
         />
       </Form>
       <Form>
-        <Input
+          <Input
             autocCapitalize="none"
             autoCorrect={false}
             error={error}
@@ -127,8 +153,16 @@ export default function Main() {
 
 
         />
+          <Picker
+              selectedValue={selectedValue}
+              style={{ height: 50, width: 150, backgroundColor:'#7A36B2' }}
+              onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+          >
+              <Picker.Item label="metro" value="metro" />
+              <Picker.Item label="centimetro" value="centimetro" />
+          </Picker>
       </Form>
-      <Form>
+        <Form>
         <Input
             autocCapitalize="none"
             autoCorrect={false}

@@ -9,40 +9,23 @@ import {
   IconAdd,
   List,
   Loading,
-  Form2
+  Form2,
+
 } from './styles';
 import Repository from '../../components/repository/index';
 import {Picker} from '@react-native-community/picker';
-import { metro, centimetro } from '../../schemas/unidade'
 
 import getRealm from '../../services/realm';
 import {isDeclaredPredicate} from '@babel/types';
 
-export default function Main() {
+export default function Main({navigation}) {
   const [input, setInput] = useState('');
   const [inputQuantidade, setInputQuantidade] = useState('');
   const [inputPrice, setInputPrice] = useState('');
-  //const [inputMetro, setInputMetro] = useState('');
-  //const [inputCentimetro, setInputCentimetro] = useState('');
   const [selectedValue, setSelectedValue] = useState('metro');
-
   const [error, setError] = useState('');
   const [loading, setloading] = useState(false);
   const [repositories, setRepositories] = useState('');
-
-  /*
-  async function saveUnidade(valuePickerMetro){
-      const realm = await getRealm();
-      realm.write(() => {
-          const data = {
-              metro: valuePickerMetro,
-              centimetro: valuePickerMetro
-          };
-          realm.create('Unidade', data);
-      });
-      return data
-  }
-   */
 
 
   async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
@@ -125,7 +108,6 @@ export default function Main() {
   return (
 
     <Container>
-
       <Title>Materiais</Title>
       <Form>
         <Input
@@ -155,7 +137,7 @@ export default function Main() {
         />
           <Picker
               selectedValue={selectedValue}
-              style={{ height: 50, width: 150, backgroundColor:'#7A36B2' }}
+              style={{ height: 50, width: 150, backgroundColor:'#7A36B2', color:'#FFF' }}
               onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
           >
               <Picker.Item label="metro" value="metro" />
@@ -181,6 +163,10 @@ export default function Main() {
           {loading ? <Loading /> : <Button
               title=""/>}
         </Button>
+          <Button title='calcular custos' onPress={() => navigation.navigate('CalculaScreen')}>
+
+          </Button>
+
       </Form2>
 
       <List
@@ -190,13 +176,11 @@ export default function Main() {
         renderItem={({item}) => (
           <Repository
             data={item}
-            onRefresh={() => handleRefreshRepository(item)}
+            //onRefresh={() => handleRefreshRepository(item)}
             deleteItem={() => handleDelRepository(item)}
           />
         )}
       />
-
-
     </Container>
   );
 }

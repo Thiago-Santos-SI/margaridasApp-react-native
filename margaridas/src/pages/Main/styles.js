@@ -13,6 +13,15 @@ export const Container = styled(LinearGradient).attrs({
   padding-bottom: 10px;
 `;
 
+export const ContainerCustos = styled(LinearGradient).attrs({
+  colors: ['#7159c1', '#9b50c1'],
+  start: {x: 0, y: 0},
+  end: {x: 1, y: 1},
+})`
+  flex: 1;
+  padding-bottom: 10px;
+`;
+
 export const Title = styled.Text`
   font-family: 'Roboto';
   font-size: 32px;
@@ -46,6 +55,19 @@ export const Input = styled.TextInput.attrs({
   color: #333;
   background: #fff;
   border: 2px solid ${props => (props.error ? '#FF7272' : '#FFF')};
+`;
+
+export const InputCustos = styled.TextInput.attrs({
+  placeholderTextColor: '#999',
+})`
+  margin-top: 20px;
+  flex: 1;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background: #fff;
+  border: 2px solid ${props => (props.error ? '#FF7272' : '#333')};
 `;
 
 export const Submit = styled.TouchableOpacity`

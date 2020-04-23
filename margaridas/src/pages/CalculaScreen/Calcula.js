@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react';
 
 import {Button, Text, View} from 'react-native';
 import {
-    Container, ContainerCustos, Form2,
-    List, Loading, Title,
-
-
+    Container, ContainerCustos, Form2, Input, InputCustos,
+    List, Title,
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 import getRealm from "../../services/realm";
@@ -13,6 +11,34 @@ import getRealm from "../../services/realm";
 
 export default function Calcula() {
     const [repositories, setRepositories] = useState('');
+    const [valueInput, setValueInput] = useState('');
+    const [input, setInput] = useState('');
+
+
+    async function handleCompareValue(){
+        const realm = await getRealm();
+        let list = realm.objects('Repository').filtered('price = "9"');
+        for (let p of list) {
+            console.log(`  ${p.price / input} `);
+        }
+        setInput('')
+        //console.tron.log(price)
+    }
+
+    async function getValue(value){
+        const data ={
+            usou: value
+        };
+        return data
+    }
+
+    /*
+    async function getValue(text){
+        const realm = await getRealm();
+        const usou = realm.write(() => {
+            realm.create('Repository', data, 'modified');
+        });
+    } */
 
     useEffect(() => {
         async function loadRepository() {
@@ -38,14 +64,25 @@ export default function Calcula() {
                     />
                 )}
             />
+
+            <Form2>
+                <InputCustos
+                    placeholder="Quanto vc utilizou desse material?"
+                    value={`${input}`}
+                    onChangeText={text => setInput(Number(text))}
+                    keyboardType="numeric"
+
+                />
+
+            </Form2>
+
             <Form2>
             <Button title='calcular custos'
-                    //onPress={() => navigation.navigate('CalculaScreen')}
+                    onPress={handleCompareValue}
             >
             </Button>
             </Form2>
-            <Title>Materiais </Title>
-            <Title>Materiais</Title>
+
 
 
         </ContainerCustos>

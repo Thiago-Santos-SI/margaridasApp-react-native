@@ -8,6 +8,7 @@ export const Container = styled.View`
   margin-bottom: 15px;
 `;
 
+
 export const ContainerCustos = styled.View`
   background-color: #FFF;
   padding: 20px;

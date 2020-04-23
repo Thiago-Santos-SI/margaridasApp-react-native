@@ -1,11 +1,10 @@
 import React from 'react';
-import {Button, StyleSheet} from 'react-native'
+import { StyleSheet, Button} from 'react-native'
 import {
   Container,
   Name,
   ContainerIcons,
   ContainerButtons,
-
 } from './styles';
 
 const repository = ({data, onRefresh, deleteItem}) => (
@@ -16,12 +15,7 @@ const repository = ({data, onRefresh, deleteItem}) => (
 
     <ContainerIcons>
       <ContainerButtons>
-        <Button
-                onPress={onRefresh}
-                title="Refresh"
-                color="#2E86C1"
-        >
-        </Button>
+
 
         <Button onPress={deleteItem}
                 title="delete"

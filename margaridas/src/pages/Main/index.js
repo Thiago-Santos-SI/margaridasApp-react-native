@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert, View, Button} from 'react-native';
+import {Keyboard, Alert, View, Button, StyleSheet, Text} from 'react-native';
 import {
   Container,
   Title,
   Form,
   Input,
-  Submit,
-  IconAdd,
   List,
   Loading,
   Form2,
@@ -16,7 +14,6 @@ import Repository from '../../components/repository/index';
 import {Picker} from '@react-native-community/picker';
 
 import getRealm from '../../services/realm';
-import {isDeclaredPredicate} from '@babel/types';
 
 export default function Main({navigation}) {
   const [input, setInput] = useState('');
@@ -159,14 +156,15 @@ export default function Main({navigation}) {
         />
       </Form>
       <Form2>
-        <Button title="Adicionar" onPress={handleAddRepository}>
-          {loading ? <Loading /> : <Button
-              title=""/>}
-        </Button>
-          <Button title='calcular custos' onPress={() => navigation.navigate('CalculaScreen')}>
-
+          <Button
+              title='Adicionar'
+              onPress={handleAddRepository}>
           </Button>
-
+          <Text> </Text>
+          <Button
+              title='calcular custos'
+              onPress={() => navigation.navigate('CalculaScreen')}>
+          </Button>
       </Form2>
 
       <List
@@ -184,7 +182,12 @@ export default function Main({navigation}) {
     </Container>
   );
 }
-
+const styles = StyleSheet.create({
+    button: {
+        padding: 5,
+        backgroundColor: '#FFF'
+    },
+});
 
 Main.navigationOptions = {
   title: 'HomeScreen',

@@ -10,12 +10,21 @@ import {
 } from './styles';
 import {Input, InputCustos} from "../../pages/Main/styles";
 import {} from '../../pages/Main/index'
+import getRealm from "../../services/realm";
 
-const repositoryCustos = ({data, props }) => {
-    const [text, setText] = useState('');
+const repositoryCustos = ({data, props, value, onChangeText }) => {
+    const [input, setInput] = useState('');
 
-
-
+    async function handleCompareValue(repo){
+        const realm = await getRealm();
+        let list = realm.objects('Repository')
+        for (let p of list) {
+            const value = ` ${(p.price * input)/p.quantidade} `
+            console.log(value)
+        }
+        setInput('')
+        //console.tron.log(price)
+    }
 
     return(
         <ContainerCustos>
@@ -24,11 +33,11 @@ const repositoryCustos = ({data, props }) => {
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
             <InputCustos
                 placeholder="Quanto vc utilizou desse material?"
-                value={props.value}
-                onChangeText={props.onChangeText}
+                value={input}
+                onChangeText={setInput}
             />
             <Button title="calcular"
-                    onPress={}>
+                    onPress={handleCompareValue}>
             </Button>
             <NameCusto>Custo do produto: </NameCusto>
 

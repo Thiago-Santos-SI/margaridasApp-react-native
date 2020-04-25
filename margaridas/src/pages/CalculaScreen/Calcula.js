@@ -6,6 +6,7 @@ import {
     List, Title,
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
+
 import getRealm from "../../services/realm";
 
 
@@ -15,7 +16,7 @@ export default function Calcula() {
     const [input, setInput] = useState('');
     const [inputPrice, setInputPrice] = useState('');
 
-
+    /*
     async function handleCompareValue(price){
         const realm = await getRealm();
         let list = realm.objects('Repository').filtered('price =  9');
@@ -25,6 +26,8 @@ export default function Calcula() {
         setInput('')
         //console.tron.log(price)
     }
+
+     */
 
 
     useEffect(() => {
@@ -47,30 +50,11 @@ export default function Calcula() {
                 renderItem={({item}) => (
                     <RepositoryCustos
                         data={item}
-
+                        value={input}
+                        onChangeText={setInput}
                     />
                 )}
             />
-
-            <Form2>
-                <InputCustos
-                    placeholder="Quanto vc utilizou desse material?"
-                    value={`${input}`}
-                    onChangeText={text => setInput(Number(text))}
-                    keyboardType="numeric"
-
-                />
-
-            </Form2>
-
-            <Form2>
-            <Button title='calcular custos'
-                    onPress={handleCompareValue}
-            >
-            </Button>
-            </Form2>
-
-
 
         </ContainerCustos>
     );

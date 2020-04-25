@@ -11,7 +11,7 @@ const repository = ({data, onRefresh, deleteItem}) => (
   <Container>
     <Name>Nome: {data.name}</Name>
     <Name>Quantidade comprada: {data.quantidade} {data.unidade} </Name>
-    <Name>preço que comprou: {data.price}.00 R$</Name>
+    <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
 
     <ContainerIcons>
       <ContainerButtons>

@@ -37,6 +37,15 @@ export const NameItem = styled.Text`
   
 `;
 
+
+export const NameCusto = styled.Text`
+  font-weight: bold;
+  font-size: 25px;
+  color: #333;
+ 
+`;
+
+
 export const Description = styled.Text.attrs({
   numberOfLines: 2,
 })`

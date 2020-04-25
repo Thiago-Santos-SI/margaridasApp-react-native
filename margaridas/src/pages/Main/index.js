@@ -40,9 +40,13 @@ export default function Main({navigation}) {
         unidade: valuePicker
 
     };
-    realm.write(() => {
-      realm.create('Repository', data, 'modified');
-    });
+    if (valueInputName === undefined || '' ){
+        setError(true);
+    }else{
+        realm.write(() => {
+            realm.create('Repository', data, 'modified');
+        });
+    }
     return data;
   }
 
@@ -55,6 +59,9 @@ export default function Main({navigation}) {
           setError(false);
           Keyboard.dismiss();
       } catch (err) {
+          if (input === undefined || ''){
+              setError(true);
+          }
           setError(true);
         }
      //setloading(false);
@@ -143,14 +150,10 @@ export default function Main({navigation}) {
       </Form>
         <Form>
         <Input
-            autocCapitalize="none"
-            autoCorrect={false}
             error={error}
             placeholder="Preço que comprou"
             value={`${inputPrice}`}
-            editable={!loading}
-            onChangeText={text => setInputPrice(Number(text))}
-            keyboardShouldPersistTaps="handle"
+            onChangeText={number => setInputPrice(Number(number))}
             keyboardType="numeric"
 
         />

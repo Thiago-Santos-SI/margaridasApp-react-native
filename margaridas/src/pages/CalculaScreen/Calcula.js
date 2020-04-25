@@ -13,32 +13,19 @@ export default function Calcula() {
     const [repositories, setRepositories] = useState('');
     const [valueInput, setValueInput] = useState('');
     const [input, setInput] = useState('');
+    const [inputPrice, setInputPrice] = useState('');
 
 
-    async function handleCompareValue(){
+    async function handleCompareValue(price){
         const realm = await getRealm();
-        let list = realm.objects('Repository').filtered('price = "9"');
+        let list = realm.objects('Repository').filtered('price =  9');
         for (let p of list) {
-            console.log(`  ${p.price / input} `);
+            console.log(`  ${(p.price * input)/p.quantidade} `);
         }
         setInput('')
         //console.tron.log(price)
     }
 
-    async function getValue(value){
-        const data ={
-            usou: value
-        };
-        return data
-    }
-
-    /*
-    async function getValue(text){
-        const realm = await getRealm();
-        const usou = realm.write(() => {
-            realm.create('Repository', data, 'modified');
-        });
-    } */
 
     useEffect(() => {
         async function loadRepository() {

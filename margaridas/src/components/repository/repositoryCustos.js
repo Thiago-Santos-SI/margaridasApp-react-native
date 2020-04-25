@@ -6,23 +6,31 @@ import {
     ContainerIcons,
     ContainerButtons,
     NameItem,
-    ContainerCustos, NameCustos
+    ContainerCustos, NameCustos, NameCusto
 } from './styles';
 import {Input, InputCustos} from "../../pages/Main/styles";
+import {} from '../../pages/Main/index'
 
-const repositoryCustos = ({data, onRefresh, deleteItem, }) => {
+const repositoryCustos = ({data, props }) => {
     const [text, setText] = useState('');
+
+
+
 
     return(
         <ContainerCustos>
             <NameItem> {data.name}</NameItem>
             <NameCustos>Quantidade comprada: {data.quantidade} {data.unidade} </NameCustos>
-            <NameCustos>preço que comprou: {data.price}.00 R$</NameCustos>
+            <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
             <InputCustos
                 placeholder="Quanto vc utilizou desse material?"
-                value={text}
-                onChangeText={setText}
+                value={props.value}
+                onChangeText={props.onChangeText}
             />
+            <Button title="calcular"
+                    onPress={}>
+            </Button>
+            <NameCusto>Custo do produto: </NameCusto>
 
         </ContainerCustos>
     )

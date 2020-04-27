@@ -8,6 +8,7 @@ import {
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 
 import getRealm from "../../services/realm";
+import {NameCustos} from "../../components/repository/styles";
 
 
 export default function Calcula() {
@@ -28,7 +29,6 @@ export default function Calcula() {
     }
 
      */
-
 
     useEffect(() => {
         async function loadRepository() {
@@ -55,12 +55,10 @@ export default function Calcula() {
                     />
                 )}
             />
-
+        <Title> TOTAL: </Title>
         </ContainerCustos>
     );
 }
-
-
 
 Calcula.navigationOptions = {
     title: 'CalculaScreen',

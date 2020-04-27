@@ -50,7 +50,8 @@ export default function Main({navigation}) {
     return data;
   }
 
-  async function handleAddRepository() {
+
+    async function handleAddRepository() {
       try {
           await saveRepository(input, inputQuantidade, inputPrice, selectedValue);
           setInput('');
@@ -68,7 +69,7 @@ export default function Main({navigation}) {
   }
 
   async function handleDelRepository(repository) {
-    Alert.alert(
+      Alert.alert(
       'Atenção!',
       `Deseja excluir o Material "${repository.name}"?`,
       [
@@ -141,7 +142,7 @@ export default function Main({navigation}) {
         />
           <Picker
               selectedValue={selectedValue}
-              style={{ height: 50, width: 150, backgroundColor:'#7A36B2', color:'#FFF' }}
+              style={styles.picker}
               onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
           >
               <Picker.Item label="metro" value="metro" />
@@ -160,11 +161,13 @@ export default function Main({navigation}) {
       </Form>
       <Form2>
           <Button
+              color="#40A36D"
               title='Adicionar'
               onPress={handleAddRepository}>
           </Button>
           <Text> </Text>
           <Button
+              color="#40A36D"
               title='calcular custos'
               onPress={() => navigation.navigate('CalculaScreen')}>
           </Button>
@@ -190,6 +193,13 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: '#FFF'
     },
+    picker:{
+         height: 50,
+         width: 150,
+         backgroundColor:'#7a36b2',
+         color:'#FFF',
+
+    }
 });
 
 Main.navigationOptions = {

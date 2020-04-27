@@ -57,6 +57,15 @@ export const Input = styled.TextInput.attrs({
   border: 2px solid ${props => (props.error ? '#FF7272' : '#FFF')};
 `;
 
+export const ButtonContainer = styled.TouchableOpacity`
+	width: 100px;
+	height: 40px;
+	padding: 12px;
+	border-radius: 10px;	
+    background-color: aqua;
+    align-self: center;
+`;
+
 export const InputCustos = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`

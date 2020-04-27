@@ -6,6 +6,8 @@ export const Container = styled.View`
   padding: 20px;
   border-radius: 4px;
   margin-bottom: 15px;
+  
+
 `;
 
 
@@ -45,6 +47,12 @@ export const NameCusto = styled.Text`
  
 `;
 
+export const NameResult = styled.Text`
+  font-weight: bold;
+  font-size: 25px;
+  color: #000000;
+ 
+`;
 
 export const Description = styled.Text.attrs({
   numberOfLines: 2,

@@ -47,10 +47,18 @@ export const NameCusto = styled.Text`
  
 `;
 
+export const NameCheck = styled.Text`
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+  margin-top: 5px;
+ 
+`;
+
 export const NameResult = styled.Text`
   font-weight: bold;
   font-size: 25px;
-  color: #000000;
+  color: #333;
  
 `;
 

@@ -40,13 +40,10 @@ export default function Main({navigation}) {
         unidade: valuePicker
 
     };
-    if (valueInputName === undefined || '' ){
-        setError(true);
-    }else{
         realm.write(() => {
             realm.create('Repository', data, 'modified');
         });
-    }
+
     return data;
   }
 
@@ -60,9 +57,6 @@ export default function Main({navigation}) {
           setError(false);
           Keyboard.dismiss();
       } catch (err) {
-          if (input === undefined || ''){
-              setError(true);
-          }
           setError(true);
         }
      //setloading(false);

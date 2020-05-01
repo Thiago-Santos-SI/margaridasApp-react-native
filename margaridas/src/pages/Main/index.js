@@ -11,10 +11,14 @@ import {
 
 } from './styles';
 import Repository from '../../components/repository/index';
+import RepositoryTest from '../../components/repository/repositoryTest';
+
+
 import {Picker} from '@react-native-community/picker';
 import Realm from 'realm'
 import getRealm from '../../services/realm';
 import TintaSchema from "../../schemas/TintaSchema";
+import {Name} from "../../components/repository/styles";
 
 export default function Main({navigation}) {
   const [input, setInput] = useState('');
@@ -28,7 +32,7 @@ export default function Main({navigation}) {
 
     const [tinta, setTinta] = useState('');
 
-    async function saveTinta(valueTinta) {
+    async function saveTinta() {
         const realm = await getRealm();
         const ID = realm.objects('Tinta').sorted('id', true).length > 0
             ? realm.objects('Tinta').sorted('id', true)[0]
@@ -36,18 +40,15 @@ export default function Main({navigation}) {
             : 1;
         const data = {
             id: ID,
-            priceTinta: valueTinta
+            priceTinta: parseInt(tinta)
         };
         realm.write(() => {
             realm.create('Tinta', data, 'modified');
         });
+
+        setTinta(0);
         return data;
     }
-
-  async function handleAddTinta(){
-      await saveTinta(tinta)
-      setTinta('');
-  }
 
 
   async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
@@ -87,8 +88,6 @@ export default function Main({navigation}) {
   }
 
 
-
-
   async function handleDelRepository(repository) {
       Alert.alert(
       'Atenção!',
@@ -116,9 +115,7 @@ export default function Main({navigation}) {
     async function loadRepository() {
       const realm = await getRealm();
       const data = realm.objects('Repository').sorted('name', true);
-      const data2 = realm.objects('Tinta').sorted('priceTinta');
       setRepositories(data);
-      setRepositoriesTint(data2)
     }
     loadRepository();
   }, []);
@@ -177,12 +174,12 @@ export default function Main({navigation}) {
                 error={error}
                 placeholder="Definir preço da tinta"
                 value={`${tinta}`}
-                onChangeText={number => setTinta(Number(number))}
+                onChangeText={setTinta}
                 keyboardType="numeric"
 
             />
             <Button title="add"
-                    onPress={handleAddTinta}>
+                    onPress={saveTinta}>
             </Button>
         </Form>
       <Form2>
@@ -195,19 +192,20 @@ export default function Main({navigation}) {
           <Button
               color="#40A36D"
               title='calcular custos'
-              onPress={() => navigation.navigate('CalculaScreen')}>
+              onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}>
           </Button>
       </Form2>
 
-
       <List
         keyboardShouldPersistTaps="handle"
+        dataTint={repositoriesTint}
         data={repositories}
         keyExtractor={item => String(item.id)}
         renderItem={({item}) => (
           <Repository
             data={item}
-            //onRefresh={() => handleRefreshRepository(item)}
+            dataTint={tinta}
+              //onRefresh={() => handleRefreshRepository(item)}
             deleteItem={() => handleDelRepository(item)}
           />
         )}

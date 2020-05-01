@@ -7,11 +7,12 @@ import {
   ContainerButtons,
 } from './styles';
 
-const repository = ({data, onRefresh, deleteItem}) => (
+const repository = ({data, dataTint, onRefresh, deleteItem}) => (
   <Container>
-    <Name>Nome: {data.name}</Name>
-    <Name>Quantidade comprada: {data.quantidade} {data.unidade} </Name>
-    <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
+      <Name>Nome: {data.name}</Name>
+      <Name>Quantidade comprada: {data.quantidade} {data.unidade} </Name>
+      <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
+      <Name>tinta: {data.priceTinta}</Name>
 
     <ContainerIcons>
       <ContainerButtons>

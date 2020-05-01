@@ -11,7 +11,7 @@ import {
 
  import CheckBox from '@react-native-community/checkbox';
 
-const repositoryCustos = ({data, props, onChangeText }) => {
+const repositoryCustos = ({data}) => {
 
     const [input, setInput] = useState('');
     const [result, setResult] = useState(0);
@@ -35,12 +35,12 @@ const repositoryCustos = ({data, props, onChangeText }) => {
         }
     }
 
-
     return(
         <ContainerCustos>
             <NameItem> {data.name}</NameItem>
             <NameCustos>Quantidade comprada: {data.quantidade} {data.unidade} </NameCustos>
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
+            <NameCustos>tinta: {data.priceTinta}</NameCustos>
             <Form>
             <CheckBox
                 value={isSelected}
@@ -62,11 +62,10 @@ const repositoryCustos = ({data, props, onChangeText }) => {
                     onPress={handleCompareValue}>
             </Button>
 
-            <NameCusto>Custo do produto: <NameResult> {result} R$ </NameResult> </NameCusto>
+            <NameCusto>Custo do produto: {result} R$ </NameCusto>
         </ContainerCustos>
 
     )
 };
-
 
 export default repositoryCustos;

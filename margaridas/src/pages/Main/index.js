@@ -12,8 +12,9 @@ import {
 } from './styles';
 import Repository from '../../components/repository/index';
 import {Picker} from '@react-native-community/picker';
-
+import Realm from 'realm'
 import getRealm from '../../services/realm';
+import TintaSchema from "../../schemas/TintaSchema";
 
 export default function Main({navigation}) {
   const [input, setInput] = useState('');
@@ -23,6 +24,30 @@ export default function Main({navigation}) {
   const [error, setError] = useState('');
   const [loading, setloading] = useState(false);
   const [repositories, setRepositories] = useState('');
+  const [repositoriesTint, setRepositoriesTint] = useState('');
+
+    const [tinta, setTinta] = useState('');
+
+    async function saveTinta(valueTinta) {
+        const realm = await getRealm();
+        const ID = realm.objects('Tinta').sorted('id', true).length > 0
+            ? realm.objects('Tinta').sorted('id', true)[0]
+            .id + 1
+            : 1;
+        const data = {
+            id: ID,
+            priceTinta: valueTinta
+        };
+        realm.write(() => {
+            realm.create('Tinta', data, 'modified');
+        });
+        return data;
+    }
+
+  async function handleAddTinta(){
+      await saveTinta(tinta)
+      setTinta('');
+  }
 
 
   async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
@@ -37,8 +62,7 @@ export default function Main({navigation}) {
         name: valueInputName,
         quantidade: valueInputQuant,
         price: valueInputPrice,
-        unidade: valuePicker
-
+        unidade: valuePicker,
     };
         realm.write(() => {
             realm.create('Repository', data, 'modified');
@@ -61,6 +85,9 @@ export default function Main({navigation}) {
         }
      //setloading(false);
   }
+
+
+
 
   async function handleDelRepository(repository) {
       Alert.alert(
@@ -85,21 +112,13 @@ export default function Main({navigation}) {
     );
   }
 
-  /*
-  async function handleRefreshRepository(dados_repo) {
-    const response = await api.get(`/repos/${dados_repo.fullName}`);
-    const data = await saveRepository(response.data);
-    setRepositories(
-      repositories.map(repo => (repo.id == data.id ? data : repo)),
-    );
-  }
-   */
-
   useEffect(() => {
     async function loadRepository() {
       const realm = await getRealm();
       const data = realm.objects('Repository').sorted('name', true);
+      const data2 = realm.objects('Tinta').sorted('priceTinta');
       setRepositories(data);
+      setRepositoriesTint(data2)
     }
     loadRepository();
   }, []);
@@ -153,6 +172,19 @@ export default function Main({navigation}) {
 
         />
       </Form>
+        <Form>
+            <Input
+                error={error}
+                placeholder="Definir preço da tinta"
+                value={`${tinta}`}
+                onChangeText={number => setTinta(Number(number))}
+                keyboardType="numeric"
+
+            />
+            <Button title="add"
+                    onPress={handleAddTinta}>
+            </Button>
+        </Form>
       <Form2>
           <Button
               color="#40A36D"
@@ -166,6 +198,7 @@ export default function Main({navigation}) {
               onPress={() => navigation.navigate('CalculaScreen')}>
           </Button>
       </Form2>
+
 
       <List
         keyboardShouldPersistTaps="handle"

@@ -7,7 +7,8 @@ export default class RepositorySchema {
       name: 'string',
       quantidade: {type:'int', optional: true},
       price: {type:'float', optional: true},
-      unidade: 'string'
+      unidade: 'string',
+      priceTinta: {type:'float', optional: true},
     },
   };
 

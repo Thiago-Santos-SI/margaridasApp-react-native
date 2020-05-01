@@ -7,21 +7,23 @@ import {
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 
+
+
 import getRealm from "../../services/realm";
-import {NameCustos} from "../../components/repository/styles";
+import {Name} from "../../components/repository/styles";
 
 
 export default function Calcula() {
     const [repositories, setRepositories] = useState('');
-    const [valueInput, setValueInput] = useState('');
+    const [total, setTotal] = useState('');
     const [input, setInput] = useState('');
-    const [inputPrice, setInputPrice] = useState('');
 
 
     useEffect(() => {
         async function loadRepository() {
             const realm = await getRealm();
             const data = realm.objects('Repository').sorted('name', true);
+            const tint = realm.objects('Tinta');
             setRepositories(data);
         }
         loadRepository();
@@ -30,7 +32,6 @@ export default function Calcula() {
     return (
         <ContainerCustos >
             <Title>Todos seus Materiais</Title>
-
             <List
                 keyboardShouldPersistTaps="handle"
                 data={repositories}
@@ -43,6 +44,7 @@ export default function Calcula() {
                     />
                 )}
             />
+            <Title> Custo Total:  </Title>
         </ContainerCustos>
     );
 }

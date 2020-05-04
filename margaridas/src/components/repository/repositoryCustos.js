@@ -23,7 +23,8 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
 
     async function handleCompareValue(){
         try {
-
+            const realm = await getRealm();
+            const tint = realm.objects('Tinta').filtered('priceTinta = 8');
             const value = isSelected ? (parseInt(dataTint)+(data.price * input)/data.quantidade) : (data.price * input)/data.quantidade
             if (value == 0 || undefined || null){
                 setError(true);

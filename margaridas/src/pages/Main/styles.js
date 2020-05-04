@@ -19,7 +19,6 @@ export const ContainerCustos = styled(LinearGradient).attrs({
   end: {x: 1, y: 1},
 })`
   flex: 1;
-  padding-bottom: 10px;
 `;
 
 export const Title = styled.Text`
@@ -28,6 +27,18 @@ export const Title = styled.Text`
   color: #fff;
   font-weight: bold;
   padding: 0px 20px;
+`;
+
+export const TitleTotal = styled.Text`
+  font-size: 32px;
+  color: #333;
+  font-weight: bold;
+`;
+
+
+export const Formm = styled.View`
+  margin-top: 100px;
+  background-color: #fff;
 `;
 
 

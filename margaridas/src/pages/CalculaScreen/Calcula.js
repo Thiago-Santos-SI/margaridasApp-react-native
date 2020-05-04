@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 
-import {Button, Text, View} from 'react-native';
+import {Button, Text, View, ScrollView} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
-    List, Title,
+    List, Title, Formm, TitleTotal
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
-
 
 
 import getRealm from "../../services/realm";
@@ -34,7 +33,9 @@ export default function Calcula({route}) {
     return (
         <ContainerCustos >
             <Title>Todos seus Materiais</Title>
+
             <List
+                horizontal={true}
                 keyboardShouldPersistTaps="handle"
                 dataTint={tint}
                 data={repositories}
@@ -50,7 +51,11 @@ export default function Calcula({route}) {
                 )}
 
             />
-            <Title> Custo Total: {total}</Title>
+            <Formm>
+                <TitleTotal> Custo Total: {total}</TitleTotal>
+
+                <TitleTotal> Preço de venda: </TitleTotal>
+            </Formm>
         </ContainerCustos>
     );
 }

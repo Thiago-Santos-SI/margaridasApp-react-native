@@ -10,12 +10,12 @@ export const Container = styled.View`
 
 `;
 
-
 export const ContainerCustos = styled.View`
   background-color: #FFF;
   padding: 20px;
   border-radius: 4px;
   margin-bottom: 15px;
+  margin-left: 30px;
 `;
 
 export const Name = styled.Text`

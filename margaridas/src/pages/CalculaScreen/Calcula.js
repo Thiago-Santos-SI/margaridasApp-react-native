@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 
-import {Button, Text, View, ScrollView} from 'react-native';
+import {Button, Text, View, ScrollView, KeyboardAvoidingView} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
-    List, Title, Formm, TitleTotal
+    List, Title, Formm, TitleTotal, Form
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 
@@ -11,6 +11,7 @@ import RepositoryCustos from "../../components/repository/repositoryCustos";
 import getRealm from "../../services/realm";
 import {Name} from "../../components/repository/styles";
 import RepositoryTest from "../../components/repository/repositoryTest";
+import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
 
 
 export default function Calcula({route}) {
@@ -18,6 +19,12 @@ export default function Calcula({route}) {
     const [tint, setTint] = useState('');
     const [input, setInput] = useState('');
     const [total,setTotal] = useState(0);
+    const [slideAnimation, setSlideAnimation] = useState(false);
+    const [lucro, setLucro] = useState('');
+    const [error, setError] = useState('');
+
+
+
 
     useEffect(() => {
         async function loadRepository() {
@@ -31,6 +38,9 @@ export default function Calcula({route}) {
     }, []);
 
     return (
+        <KeyboardAvoidingView
+            style={{flex: 1}}
+        >
         <ContainerCustos >
             <Title>Todos seus Materiais</Title>
 
@@ -49,14 +59,49 @@ export default function Calcula({route}) {
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
                     />
                 )}
-
             />
-            <Formm>
-                <TitleTotal> Custo Total: {total}</TitleTotal>
 
+            <Formm>
+                <Form2>
+                    <Button
+                        title="Definir valor de lucro"
+                        color="#7A36B2"
+                        onPress={() => setSlideAnimation(true)}
+                    />
+                </Form2>
+                <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
                 <TitleTotal> Preço de venda: </TitleTotal>
             </Formm>
+
+            <Dialog
+                onDismiss={() => {
+                    setSlideAnimation(false)
+                }}
+                onTouchOutside={() => {
+                    setSlideAnimation(false)
+                }}
+                visible={slideAnimation}
+                dialogTitle={<DialogTitle title="Definir valor de lucro para calculo             " />}
+                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
+                <DialogContent>
+                    <Form>
+                        <Input
+                            error={error}
+                            placeholder="Definir valor de lucro para calculo"
+                            value={`${lucro}`}
+                            onChangeText={number => setLucro(Number(number))}
+                            keyboardType="numeric"
+
+                        />
+                        <Button title="add"
+                               >
+                        </Button>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+
         </ContainerCustos>
+        </KeyboardAvoidingView>
     );
 }
 

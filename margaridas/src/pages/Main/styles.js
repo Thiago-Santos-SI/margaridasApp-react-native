@@ -37,7 +37,6 @@ export const TitleTotal = styled.Text`
 
 
 export const Formm = styled.View`
-  margin-top: 100px;
   background-color: #fff;
 `;
 

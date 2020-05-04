@@ -24,17 +24,21 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
     async function handleCompareValue(){
         try {
             const realm = await getRealm();
-            const tint = realm.objects('Tinta').filtered('priceTinta = 8');
-            const value = isSelected ? (parseInt(dataTint)+(data.price * input)/data.quantidade) : (data.price * input)/data.quantidade
-            if (value == 0 || undefined || null){
-                setError(true);
-            }else {
-                console.log(value)
-                addPrecoTotal(value)
-                setResult(value)
-                setInput('')
-                setError(false)
-                Keyboard.dismiss();
+            const tint = realm.objects('Tinta');
+            for (let p of tint) {
+                const valueTint =  `${p.priceTinta}`
+                //console.log(`  ${p.priceTinta}`);
+                const value = isSelected ? (parseInt(valueTint)+(data.price * input)/data.quantidade) : (data.price * input)/data.quantidade
+                if (value == 0 || undefined || null){
+                    setError(true);
+                }else {
+                    console.log(value)
+                    addPrecoTotal(value)
+                    setResult(value)
+                    setInput('')
+                    setError(false)
+                    Keyboard.dismiss();
+                }
             }
         }catch (e) {
             setError(true)
@@ -43,10 +47,9 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
 
     return(
         <ContainerCustos>
-            <NameItem> {data.name}</NameItem>
+            <NameItem> {data.name.toUpperCase()}</NameItem>
             <NameCustos>Quantidade comprada: {data.quantidade} {data.unidade} </NameCustos>
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
-            <Name>tinta{dataTint.priceTinta}</Name>
             <Form>
             <CheckBox
                 value={isSelected}

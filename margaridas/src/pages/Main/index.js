@@ -12,13 +12,19 @@ import {
 } from './styles';
 import Repository from '../../components/repository/index';
 import RepositoryTest from '../../components/repository/repositoryTest';
+import Dialog, {
+
+    DialogTitle,
+    DialogContent,
+    SlideAnimation,
+} from 'react-native-popup-dialog';
 
 
 import {Picker} from '@react-native-community/picker';
 import Realm from 'realm'
 import getRealm from '../../services/realm';
 import TintaSchema from "../../schemas/TintaSchema";
-import {Name} from "../../components/repository/styles";
+import {ContainerCustos, Name} from "../../components/repository/styles";
 
 export default function Main({navigation}) {
     const [input, setInput] = useState('');
@@ -29,7 +35,7 @@ export default function Main({navigation}) {
     const [loading, setloading] = useState(false);
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
-
+    const [slideAnimation, setSlideAnimation] = useState(false);
     const [tinta, setTinta] = useState('');
 
     async function saveTinta(value) {
@@ -48,6 +54,23 @@ export default function Main({navigation}) {
         return data;
     }
 
+    async function handleDeletTint(){
+        const realm = await getRealm();
+        realm.write(()=> {
+            let allTint = realm.objects('Tinta');
+            realm.delete(allTint);
+            console.log(allTint)
+        })
+    }
+
+    async function handleTest(){
+        const realm = await getRealm();
+        const tint = realm.objects('Tinta');
+        for (let p of tint) {
+            console.log(`  ${p.priceTinta}`);
+        }
+    }
+
     async function handleAddTinta(){
         try {
             const value = await saveTinta(tinta)
@@ -59,8 +82,6 @@ export default function Main({navigation}) {
         }
 
     }
-
-
 
     async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
         const realm = await getRealm();
@@ -132,9 +153,17 @@ export default function Main({navigation}) {
     }, []);
 
     return (
-
         <Container>
+            <Form>
             <Title>Materiais</Title>
+                <Button
+                    title="Definir valor da tinta"
+                    color="#40A36D"
+                    onPress={() => {
+                        setSlideAnimation(true)
+                    }}
+                />
+            </Form>
             <Form>
                 <Input
                     autocCapitalize="none"
@@ -180,19 +209,7 @@ export default function Main({navigation}) {
 
                 />
             </Form>
-            <Form>
-                <Input
-                    error={error}
-                    placeholder="Definir preço da tinta"
-                    value={`${tinta}`}
-                    onChangeText={number => setTinta(Number(number))}
-                    keyboardType="numeric"
 
-                />
-                <Button title="add"
-                        onPress={handleAddTinta}>
-                </Button>
-            </Form>
             <Form2>
                 <Button
                     color="#40A36D"
@@ -204,6 +221,12 @@ export default function Main({navigation}) {
                     color="#40A36D"
                     title='calcular custos'
                     onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}>
+                </Button>
+                <Text> </Text>
+                <Button
+                    color="#40A36D"
+                    title='Test'
+                    onPress={handleTest}>
                 </Button>
             </Form2>
 
@@ -221,6 +244,37 @@ export default function Main({navigation}) {
                     />
                 )}
             />
+
+            <Dialog
+                onDismiss={() => {
+                    setSlideAnimation(false)
+                }}
+                onTouchOutside={() => {
+                    setSlideAnimation(false)
+                }}
+                visible={slideAnimation}
+                dialogTitle={<DialogTitle title="Valor da tinta para o calculo" />}
+                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
+                <DialogContent>
+                    <Form>
+                        <Input
+                            error={error}
+                            placeholder="Definir preço da tinta"
+                            value={`${tinta}`}
+                            onChangeText={number => setTinta(Number(number))}
+                            keyboardType="numeric"
+
+                        />
+                        <Button title="add"
+                                onPress={handleAddTinta}>
+                        </Button>
+                        <Button title="del"
+                                onPress={handleDeletTint}>
+                        </Button>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+
         </Container>
     );
 }

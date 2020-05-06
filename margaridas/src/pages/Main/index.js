@@ -92,14 +92,11 @@ export default function Main({navigation}) {
     }
 
     async function handleTest(){
-
         const realm = await getRealm();
-
         const tint = realm.objects('Tinta');
         for (let p of tint) {
             console.log(`  ${p.priceTinta}`);
         }
-
         const dado = realm.objects('Tinta')[0];
         console.log(dado)
     }
@@ -274,7 +271,7 @@ export default function Main({navigation}) {
                     setSlideAnimation(false)
                 }}
                 visible={slideAnimation}
-                dialogTitle={<DialogTitle title="Valor da tinta para o calculo" />}
+                dialogTitle={<DialogTitle title="Valor da tinta para o calculo                      " />}
                 dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
                 <DialogContent>
                     <Form>
@@ -286,13 +283,17 @@ export default function Main({navigation}) {
                             keyboardType="numeric"
 
                         />
+                    </Form>
+                    <Form2>
                         <Button title="add"
                                 onPress={handleAddTinta}>
                         </Button>
+                        <Text> </Text>
                         <Button title="del"
                                 onPress={handleDeletTint}>
                         </Button>
-                    </Form>
+                    </Form2>
+
                 </DialogContent>
             </Dialog>
 

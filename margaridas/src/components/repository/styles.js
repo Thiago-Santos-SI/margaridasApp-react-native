@@ -15,7 +15,7 @@ export const ContainerCustos = styled.View`
   padding: 20px;
   border-radius: 4px;
   margin-bottom: 15px;
-  margin-left: 30px;
+  margin-left: 18px;
 `;
 
 export const Name = styled.Text`

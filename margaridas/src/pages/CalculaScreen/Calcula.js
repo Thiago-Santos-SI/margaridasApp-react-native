@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {Button, Text, View, ScrollView, KeyboardAvoidingView} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
-    List, Title, Formm, TitleTotal, Form
+    List, Title, Formm, TitleTotal, Form, TitlePorcentagem
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 
@@ -12,7 +12,7 @@ import getRealm from "../../services/realm";
 import {Name} from "../../components/repository/styles";
 import RepositoryTest from "../../components/repository/repositoryTest";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
-
+import Realm from 'realm'
 
 export default function Calcula({route}) {
     const [repositories, setRepositories] = useState('');
@@ -22,16 +22,22 @@ export default function Calcula({route}) {
     const [slideAnimation, setSlideAnimation] = useState(false);
     const [lucro, setLucro] = useState('');
     const [error, setError] = useState('');
+    const [porcentagem, setPorcentagem] = useState(0);
+    const [venda, setVenda] = useState(0);
 
-    async function a() {
+
+    async function handleVenda(){
         const realm = await getRealm();
-        let value = realm.objects('Lucro');
-        for (let p of value) {
+        let valuePorcentagem = realm.objects('Lucro');
+        /*
+        for (let p of valuePorcentagem) {
             const val = `${p.priceLucro}`
-            console.log(val)
-        }
+            setPorcentagem(val)
+        } */
+        const soma = parseInt(total)+parseInt(total)
+        setVenda(soma)
+        console.log(soma)
     }
-
 
     async function saveLucro(value) {
         const realm = await getRealm();
@@ -50,12 +56,19 @@ export default function Calcula({route}) {
             const value = await saveLucro(lucro)
             console.log(value)
             setLucro('');
+            const realm = await getRealm();
+            let valuePorcentagem = realm.objects('Lucro');
+            for (let p of valuePorcentagem) {
+                const val = `${p.priceLucro}`
+                setPorcentagem(val)
+                console.log(porcentagem)
+            }
         }
         catch (e) {
-            setError(true)
+            setError(true);
+            console.log(e)
         }
     }
-
 
     async function handleTest(){
         const realm = await getRealm();
@@ -63,8 +76,7 @@ export default function Calcula({route}) {
         for (let p of tint) {
             console.log(`  ${p.priceTinta}`);
         }
-
-        const dado = realm.objects('Tinta')[0];
+        const dado = realm.objects('Tinta');
         console.log(dado)
     }
 
@@ -111,10 +123,15 @@ export default function Calcula({route}) {
                         color="#7A36B2"
                         onPress={() => setSlideAnimation(true)}
                     />
+                    <Button
+                        title="lucro"
+                        color="#7A36B2"
+                        onPress={handleVenda}
+                    />
                 </Form2>
                 <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
-                <TitleTotal> Preço de venda: </TitleTotal>
-                <TitleTotal> Seu valor de lucro atual: {}</TitleTotal>
+                <TitlePorcentagem> Preço de venda: {venda} </TitlePorcentagem>
+                <TitlePorcentagem> Seu valor de lucro atual: {porcentagem}</TitlePorcentagem>
 
             </Formm>
 
@@ -138,13 +155,16 @@ export default function Calcula({route}) {
                             keyboardType="numeric"
 
                         />
-                        <Button title="add"
-                               onPress={handleAddLucro}>
-                        </Button>
-                        <Button title="test"
-                                onPress={a}>
-                        </Button>
                     </Form>
+                    <Form2>
+                        <Button title="add"
+                                onPress={handleAddLucro}>
+                        </Button>
+                        <Text> </Text>
+                        <Button title="test"
+                                >
+                        </Button>
+                    </Form2>
                 </DialogContent>
             </Dialog>
 

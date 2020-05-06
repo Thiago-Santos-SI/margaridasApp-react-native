@@ -35,6 +35,12 @@ export const TitleTotal = styled.Text`
   font-weight: bold;
 `;
 
+export const TitlePorcentagem = styled.Text`
+  font-size: 27px;
+  color: #333;
+  font-weight: bold;
+`;
+
 
 export const Formm = styled.View`
   background-color: #fff;
@@ -51,7 +57,7 @@ export const Form2 = styled.View`
   flex-direction: row;
   margin-top: 10px;
   padding: 0 20px;
-    justify-content: center;
+  justify-content: center;
 
 `;
 

@@ -23,7 +23,50 @@ export default function Calcula({route}) {
     const [lucro, setLucro] = useState('');
     const [error, setError] = useState('');
 
+    async function a() {
+        const realm = await getRealm();
+        let value = realm.objects('Lucro');
+        for (let p of value) {
+            const val = `${p.priceLucro}`
+            console.log(val)
+        }
+    }
 
+
+    async function saveLucro(value) {
+        const realm = await getRealm();
+        const data = {
+            id: 1,
+            priceLucro: parseInt(value)
+        };
+        realm.write(() => {
+            realm.create('Lucro', data, 'modified');
+        });
+        return data;
+    }
+
+    async function handleAddLucro(){
+        try {
+            const value = await saveLucro(lucro)
+            console.log(value)
+            setLucro('');
+        }
+        catch (e) {
+            setError(true)
+        }
+    }
+
+
+    async function handleTest(){
+        const realm = await getRealm();
+        const tint = realm.objects('Tinta');
+        for (let p of tint) {
+            console.log(`  ${p.priceTinta}`);
+        }
+
+        const dado = realm.objects('Tinta')[0];
+        console.log(dado)
+    }
 
 
     useEffect(() => {
@@ -71,6 +114,8 @@ export default function Calcula({route}) {
                 </Form2>
                 <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
                 <TitleTotal> Preço de venda: </TitleTotal>
+                <TitleTotal> Seu valor de lucro atual: {}</TitleTotal>
+
             </Formm>
 
             <Dialog
@@ -94,7 +139,10 @@ export default function Calcula({route}) {
 
                         />
                         <Button title="add"
-                               >
+                               onPress={handleAddLucro}>
+                        </Button>
+                        <Button title="test"
+                                onPress={a}>
                         </Button>
                     </Form>
                 </DialogContent>

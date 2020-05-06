@@ -1,4 +1,4 @@
- import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Keyboard, StyleSheet, Text} from 'react-native'
 import {
     NameItem,
@@ -71,7 +71,7 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
                     onPress={handleCompareValue}>
             </Button>
 
-            <NameCusto>Custo do produto: {result} R$ </NameCusto>
+            <NameCusto>Custo do produto: {result.toFixed(2)} R$ </NameCusto>
         </ContainerCustos>
 
     )

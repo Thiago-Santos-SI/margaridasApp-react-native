@@ -26,6 +26,19 @@ import getRealm from '../../services/realm';
 import TintaSchema from "../../schemas/TintaSchema";
 import {ContainerCustos, Name} from "../../components/repository/styles";
 
+const styles = StyleSheet.create({
+    button: {
+        padding: 5,
+        backgroundColor: '#FFF'
+    },
+    picker:{
+        height: 50,
+        width: 150,
+        backgroundColor:'#7a36b2',
+        color:'#FFF',
+
+    }
+});
 export default function Main({navigation}) {
     const [input, setInput] = useState('');
     const [inputQuantidade, setInputQuantidade] = useState('');
@@ -40,35 +53,21 @@ export default function Main({navigation}) {
 
     async function saveTinta(value) {
         const realm = await getRealm();
+        /*
         const ID = realm.objects('Tinta').sorted('id', true).length > 0
             ? realm.objects('Tinta').sorted('id', true)[0]
             .id + 1
-            : 1;
+            : 1; */
+       // let dado = realm.objects('Tinta')[0]
+
         const data = {
-            id: ID,
+            id: 1,
             priceTinta: parseInt(value)
         };
         realm.write(() => {
             realm.create('Tinta', data, 'modified');
         });
         return data;
-    }
-
-    async function handleDeletTint(){
-        const realm = await getRealm();
-        realm.write(()=> {
-            let allTint = realm.objects('Tinta');
-            realm.delete(allTint);
-            console.log(allTint)
-        })
-    }
-
-    async function handleTest(){
-        const realm = await getRealm();
-        const tint = realm.objects('Tinta');
-        for (let p of tint) {
-            console.log(`  ${p.priceTinta}`);
-        }
     }
 
     async function handleAddTinta(){
@@ -81,6 +80,28 @@ export default function Main({navigation}) {
             setError(true)
         }
 
+    }
+
+    async function handleDeletTint(){
+        const realm = await getRealm();
+        realm.write(() => {
+            let allTint = realm.objects('Tinta');
+            realm.delete(allTint);
+            console.log(allTint)
+        })
+    }
+
+    async function handleTest(){
+
+        const realm = await getRealm();
+
+        const tint = realm.objects('Tinta');
+        for (let p of tint) {
+            console.log(`  ${p.priceTinta}`);
+        }
+
+        const dado = realm.objects('Tinta')[0];
+        console.log(dado)
     }
 
     async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
@@ -155,7 +176,7 @@ export default function Main({navigation}) {
     return (
         <Container>
             <Form>
-            <Title>Materiais</Title>
+                <Title>Materiais</Title>
                 <Button
                     title="Definir valor da tinta"
                     color="#40A36D"
@@ -278,19 +299,6 @@ export default function Main({navigation}) {
         </Container>
     );
 }
-const styles = StyleSheet.create({
-    button: {
-        padding: 5,
-        backgroundColor: '#FFF'
-    },
-    picker:{
-        height: 50,
-        width: 150,
-        backgroundColor:'#7a36b2',
-        color:'#FFF',
-
-    }
-});
 
 Main.navigationOptions = {
     title: 'HomeScreen',

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import {Button, Text, View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {Button, Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
     List, Title, Formm, TitleTotal, Form, TitlePorcentagem
@@ -13,6 +13,7 @@ import {Name} from "../../components/repository/styles";
 import RepositoryTest from "../../components/repository/repositoryTest";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
 import Realm from 'realm'
+import {Picker} from "@react-native-community/picker";
 
 export default function Calcula({route}) {
     const [repositories, setRepositories] = useState('');
@@ -24,19 +25,43 @@ export default function Calcula({route}) {
     const [error, setError] = useState('');
     const [porcentagem, setPorcentagem] = useState(0);
     const [venda, setVenda] = useState(0);
+    const [selectedValue, setSelectedValue] = useState('metro');
+
 
 
     async function handleVenda(){
+        setVenda(total + total * porcentagem )
+        console.log(venda)
+    }
+
+    async function savePorcentagem(value) {
         const realm = await getRealm();
-        let valuePorcentagem = realm.objects('Lucro');
-        /*
-        for (let p of valuePorcentagem) {
-            const val = `${p.priceLucro}`
-            setPorcentagem(val)
-        } */
-        const soma = parseInt(total)+parseInt(total)
-        setVenda(soma)
-        console.log(soma)
+        const data = {
+            id: 2,
+            priceLucro: parseInt(value)
+        };
+        realm.write(() => {
+            realm.create('Lucro', data, 'modified');
+        });
+        return data;
+    }
+
+    async function handleAddPorcentagem() {
+        try {
+            await savePorcentagem(selectedValue);
+            console.log(selectedValue)
+            const realm = await getRealm();
+            let valuePorcentagem = realm.objects('Lucro').filtered('id = 2');
+            for (let p of valuePorcentagem) {
+                const val = `${p.priceLucro}`
+                setPorcentagem(parseInt(val)/100)
+                //console.log(porcentagem)
+            }
+            setError(false);
+            Keyboard.dismiss();
+        } catch (err) {
+            setError(true);
+        }
     }
 
     async function saveLucro(value) {
@@ -60,8 +85,8 @@ export default function Calcula({route}) {
             let valuePorcentagem = realm.objects('Lucro');
             for (let p of valuePorcentagem) {
                 const val = `${p.priceLucro}`
-                setPorcentagem(val)
-                console.log(porcentagem)
+                setPorcentagem(parseInt(val)/100)
+                //console.log(porcentagem)
             }
         }
         catch (e) {
@@ -72,12 +97,8 @@ export default function Calcula({route}) {
 
     async function handleTest(){
         const realm = await getRealm();
-        const tint = realm.objects('Tinta');
-        for (let p of tint) {
-            console.log(`  ${p.priceTinta}`);
-        }
-        const dado = realm.objects('Tinta');
-        console.log(dado)
+        let valuePorcentagem = realm.objects('Lucro');
+        console.log(valuePorcentagem)
     }
 
 
@@ -112,6 +133,7 @@ export default function Calcula({route}) {
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
+                       // addPrecoVenda={setVenda(total + total)}
                     />
                 )}
             />
@@ -123,15 +145,17 @@ export default function Calcula({route}) {
                         color="#7A36B2"
                         onPress={() => setSlideAnimation(true)}
                     />
+                    <Text>  </Text>
                     <Button
-                        title="lucro"
+                        title="Calcular preço de venda"
                         color="#7A36B2"
                         onPress={handleVenda}
                     />
+
                 </Form2>
                 <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
-                <TitlePorcentagem> Preço de venda: {venda} </TitlePorcentagem>
-                <TitlePorcentagem> Seu valor de lucro atual: {porcentagem}</TitlePorcentagem>
+                <TitlePorcentagem> Preço de venda: {venda.toFixed(2)} R$</TitlePorcentagem>
+                <TitlePorcentagem> Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
             </Formm>
 
@@ -147,6 +171,20 @@ export default function Calcula({route}) {
                 dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
                 <DialogContent>
                     <Form>
+                        <Picker
+                            selectedValue={selectedValue}
+                            style={styles.picker}
+                            onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                        >
+                            <Picker.Item label="150%" value={150} />
+                            <Picker.Item label="120%" value={120} />
+                            <Picker.Item label="100%" value={100} />
+                            <Picker.Item label="50%" value={50} />
+                            <Picker.Item label="30%" value={30} />
+                            <Picker.Item label="20%" value={20} />
+                            <Picker.Item label="10%" value={10} />
+
+                        </Picker>
                         <Input
                             error={error}
                             placeholder="Definir valor de lucro para calculo"
@@ -161,8 +199,13 @@ export default function Calcula({route}) {
                                 onPress={handleAddLucro}>
                         </Button>
                         <Text> </Text>
+                        <Button title="add p"
+                                onPress={handleAddPorcentagem}>
+                        </Button>
+                        <Text> </Text>
+
                         <Button title="test"
-                                >
+                                onPress={handleTest}>
                         </Button>
                     </Form2>
                 </DialogContent>
@@ -172,6 +215,20 @@ export default function Calcula({route}) {
         </KeyboardAvoidingView>
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        padding: 5,
+        backgroundColor: '#FFF'
+    },
+    picker:{
+        height: 50,
+        width: 150,
+        backgroundColor:'#7a36b2',
+        color:'#FFF',
+
+    }
+});
 
 Calcula.navigationOptions = {
     title: 'CalculaScreen',

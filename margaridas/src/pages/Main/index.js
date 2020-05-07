@@ -26,19 +26,6 @@ import getRealm from '../../services/realm';
 import TintaSchema from "../../schemas/TintaSchema";
 import {ContainerCustos, Name} from "../../components/repository/styles";
 
-const styles = StyleSheet.create({
-    button: {
-        padding: 5,
-        backgroundColor: '#FFF'
-    },
-    picker:{
-        height: 50,
-        width: 150,
-        backgroundColor:'#7a36b2',
-        color:'#FFF',
-
-    }
-});
 export default function Main({navigation}) {
     const [input, setInput] = useState('');
     const [inputQuantidade, setInputQuantidade] = useState('');
@@ -300,6 +287,20 @@ export default function Main({navigation}) {
         </Container>
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        padding: 5,
+        backgroundColor: '#FFF'
+    },
+    picker:{
+        height: 50,
+        width: 150,
+        backgroundColor:'#7a36b2',
+        color:'#FFF',
+
+    }
+});
 
 Main.navigationOptions = {
     title: 'HomeScreen',

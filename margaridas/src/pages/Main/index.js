@@ -32,17 +32,12 @@ export default function Main({navigation}) {
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [slideAnimation, setSlideAnimation] = useState(false);
+    const [slideAnimation2, setSlideAnimation2] = useState(false);
     const [tinta, setTinta] = useState('');
+    const [updateName, setUpdateName] = useState('');
 
     async function saveTinta(value) {
         const realm = await getRealm();
-        /*
-        const ID = realm.objects('Tinta').sorted('id', true).length > 0
-            ? realm.objects('Tinta').sorted('id', true)[0]
-            .id + 1
-            : 1; */
-       // let dado = realm.objects('Tinta')[0]
-
         const data = {
             id: 1,
             priceTinta: parseInt(value)
@@ -120,6 +115,16 @@ export default function Main({navigation}) {
         //setloading(false);
     }
 
+    async function handleUpdate(repository){
+        try {
+            const realm = await getRealm();
+            realm.write(()=>{
+                realm.create('Repository', {id: 1, name: updateName}, 'modified');})
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
 
     async function handleDelRepository(repository) {
         Alert.alert(
@@ -159,10 +164,11 @@ export default function Main({navigation}) {
                 <Title>Materiais</Title>
                 <Button
                     title="Definir valor da tinta"
-                    color="#40A36D"
+                    color='#256FC7'
                     onPress={() => {
                         setSlideAnimation(true)
                     }}
+
                 />
             </Form>
             <Form>
@@ -212,10 +218,8 @@ export default function Main({navigation}) {
             </Form>
 
             <Form2>
-
                 <Button
-
-                    color="#40A36D"
+                    color='#256FC7'
                     title='Adicionar'
                     onPress={handleAddRepository}>
                     <Icon
@@ -223,16 +227,11 @@ export default function Main({navigation}) {
                 </Button>
                 <Text> </Text>
                 <Button
-                    color="#40A36D"
+                    color='#256FC7'
                     title='calcular custos'
                     onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}>
                 </Button>
-                <Text> </Text>
-                <Button
-                    color="#40A36D"
-                    title='Test'
-                    onPress={handleTest}>
-                </Button>
+
             </Form2>
 
             <List
@@ -291,7 +290,8 @@ export default function Main({navigation}) {
 const styles = StyleSheet.create({
     button: {
         padding: 5,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        fontFamily: 'Roboto'
     },
     picker:{
         height: 50,

@@ -82,9 +82,10 @@ export const Description = styled.Text.attrs({
 
 
 export const ContainerIcons = styled.View`
-  flex-direction: row;
-  margin-top: 15px;
+  flex-direction: column;
   justify-content: center;
+  margin-left: 28px;
+  margin-top: -20px;
 `;
 
 

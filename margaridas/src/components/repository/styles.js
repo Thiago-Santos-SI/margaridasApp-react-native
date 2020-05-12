@@ -6,6 +6,7 @@ export const Container = styled.View`
   padding: 20px;
   border-radius: 4px;
   margin-bottom: 15px;
+  flex-direction: row;
   
 
 `;
@@ -24,6 +25,14 @@ export const Name = styled.Text`
   color: #333;
   
 `;
+
+export const NameQuantidade = styled.Text`
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  
+`;
+
 export const NameCustos = styled.Text`
   font-weight: bold;
   font-size: 18px;
@@ -75,12 +84,9 @@ export const Description = styled.Text.attrs({
 export const ContainerIcons = styled.View`
   flex-direction: row;
   margin-top: 15px;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
-export const ContainerButtons = styled.View`
-  flex-direction: row;
-`;
 
 
 

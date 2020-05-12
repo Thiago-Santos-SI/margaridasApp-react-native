@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert, View, Button, StyleSheet, Text} from 'react-native';
+import {Keyboard, Alert, View, Button, StyleSheet, Text, ImageComponent} from 'react-native';
 import {
     Container,
     Title,
@@ -11,7 +11,6 @@ import {
 
 } from './styles';
 import Repository from '../../components/repository/index';
-import RepositoryTest from '../../components/repository/repositoryTest';
 import Dialog, {
 
     DialogTitle,
@@ -19,12 +18,9 @@ import Dialog, {
     SlideAnimation,
 } from 'react-native-popup-dialog';
 
-
 import {Picker} from '@react-native-community/picker';
-import Realm from 'realm'
 import getRealm from '../../services/realm';
-import TintaSchema from "../../schemas/TintaSchema";
-import {ContainerCustos, Name} from "../../components/repository/styles";
+import { Icon, ThemeProvider } from 'react-native-elements';
 
 export default function Main({navigation}) {
     const [input, setInput] = useState('');
@@ -216,10 +212,14 @@ export default function Main({navigation}) {
             </Form>
 
             <Form2>
+
                 <Button
+
                     color="#40A36D"
                     title='Adicionar'
                     onPress={handleAddRepository}>
+                    <Icon
+                    name='rowing' />
                 </Button>
                 <Text> </Text>
                 <Button

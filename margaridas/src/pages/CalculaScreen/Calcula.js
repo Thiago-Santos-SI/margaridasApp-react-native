@@ -28,7 +28,6 @@ export default function Calcula({route}) {
     const [selectedValue, setSelectedValue] = useState('metro');
 
 
-
     async function handleVenda(){
         setVenda(total + total * porcentagem )
         console.log(venda)
@@ -183,8 +182,8 @@ export default function Calcula({route}) {
                             <Picker.Item label="30%" value={30} />
                             <Picker.Item label="20%" value={20} />
                             <Picker.Item label="10%" value={10} />
-
                         </Picker>
+
                         <Input
                             error={error}
                             placeholder="Definir valor de lucro para calculo"

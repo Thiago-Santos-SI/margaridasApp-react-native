@@ -15,12 +15,12 @@ import Dialog, {
 
     DialogTitle,
     DialogContent,
-    SlideAnimation,
+    SlideAnimation, DialogFooter, DialogButton,
 } from 'react-native-popup-dialog';
 
 import {Picker} from '@react-native-community/picker';
 import getRealm from '../../services/realm';
-import { Icon, ThemeProvider } from 'react-native-elements';
+
 
 export default function Main({navigation}) {
     const [input, setInput] = useState('');
@@ -32,9 +32,10 @@ export default function Main({navigation}) {
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [slideAnimation, setSlideAnimation] = useState(false);
-    const [slideAnimation2, setSlideAnimation2] = useState(false);
     const [tinta, setTinta] = useState('');
     const [updateName, setUpdateName] = useState('');
+
+
 
     async function saveTinta(value) {
         const realm = await getRealm();
@@ -115,39 +116,18 @@ export default function Main({navigation}) {
         //setloading(false);
     }
 
-    async function handleUpdate(repository){
+
+     const handleDeleteRepository = async (repository) => {
         try {
             const realm = await getRealm();
-            realm.write(()=>{
-                realm.create('Repository', {id: 1, name: updateName}, 'modified');})
-        }catch (e) {
-            console.log(e)
+            realm.write(() => realm.delete(repository));
+            const data = realm.objects('Repository').sorted('name', true);
+            setRepositories(data);
+        } catch (err) {
+            console.log('Algo de errado não esta certo', err);
         }
     }
 
-
-    async function handleDelRepository(repository) {
-        Alert.alert(
-            'Atenção!',
-            `Deseja excluir o Material "${repository.name}"?`,
-            [
-                {
-                    text: 'Confirmar',
-                    onPress: async () => {
-                        try {
-                            const realm = await getRealm();
-                            realm.write(() => realm.delete(repository));
-                            const data = realm.objects('Repository').sorted('name', true);
-                            setRepositories(data);
-                        } catch (err) {
-                            console.log('Algo de errado não esta certo', err);
-                        }
-                    },
-                },
-                {text: 'Cancelar', onPress: () => {}},
-            ],
-        );
-    }
 
     useEffect(() => {
         async function loadRepository() {
@@ -194,9 +174,8 @@ export default function Main({navigation}) {
                     onChangeText={text => setInputQuantidade(Number(text))}
                     keyboardShouldPersistTaps="handle"
                     keyboardType="numeric"
-
-
                 />
+
                 <Picker
                     selectedValue={selectedValue}
                     style={styles.picker}
@@ -222,8 +201,6 @@ export default function Main({navigation}) {
                     color='#256FC7'
                     title='Adicionar'
                     onPress={handleAddRepository}>
-                    <Icon
-                    name='rowing' />
                 </Button>
                 <Text> </Text>
                 <Button
@@ -243,8 +220,7 @@ export default function Main({navigation}) {
                     <Repository
                         data={item}
                         dataTint={tinta}
-                        //onRefresh={() => handleRefreshRepository(item)}
-                        deleteItem={() => handleDelRepository(item)}
+                        deleteItem={() => handleDeleteRepository(item)}
                     />
                 )}
             />
@@ -282,6 +258,8 @@ export default function Main({navigation}) {
 
                 </DialogContent>
             </Dialog>
+
+
 
         </Container>
     );

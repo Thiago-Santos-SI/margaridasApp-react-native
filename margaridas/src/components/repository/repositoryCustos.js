@@ -18,7 +18,6 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
     const [result, setResult] = useState(0);
     const [error, setError] = useState('');
     const [isSelected, setSelection] = useState(false);
-    const [tint, setTint] = useState('');
 
 
     async function handleCompareValue(){
@@ -67,7 +66,7 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
             />
             <Text> </Text>
             <Button title="calcular"
-                    color="#7A36B2"
+                    color='#256FC7'
                     onPress={handleCompareValue}>
             </Button>
 

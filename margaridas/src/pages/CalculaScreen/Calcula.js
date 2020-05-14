@@ -141,13 +141,13 @@ export default function Calcula({route}) {
                 <Form2>
                     <Button
                         title="Definir valor de lucro"
-                        color="#7A36B2"
+                        color='#256FC7'
                         onPress={() => setSlideAnimation(true)}
                     />
                     <Text>  </Text>
                     <Button
                         title="Calcular preço de venda"
-                        color="#7A36B2"
+                        color='#256FC7'
                         onPress={handleVenda}
                     />
 

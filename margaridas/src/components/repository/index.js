@@ -1,31 +1,34 @@
 import React, {useState} from 'react';
-import {StyleSheet, Button, View} from 'react-native'
+import {Text, Button, View} from 'react-native'
 import {
-  Container,
-  Name,
-  ContainerIcons,
-  ContainerButtons, NameQuantidade
+  Container, Name, ContainerIcons, NameQuantidade
 } from './styles';
 import { Icon, ThemeProvider } from 'react-native-elements';
 import getRealm from "../../services/realm";
-import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
-import {Form, Form2, Input} from "../../pages/Main/styles";
+import Dialog, {DialogContent, DialogTitle, SlideAnimation, DialogButton, DialogFooter} from "react-native-popup-dialog";
+import {Form, Input} from "../../pages/Main/styles";
 
 
 
-const repository = ({data, updateAnimation, deleteItem}) => {
+export const repository = ({data, deleteItem, }) => {
     const [updateName, setUpdateName] = useState('');
     const [slideAnimation2, setSlideAnimation2] = useState(false);
+    const [defaultAnimationDialog, setDefaultAnimationDialog] = useState(false);
     const [error, setError] = useState('');
 
 
-    async function handleUpdate(repository){
+    async function handleUpdate(){
         try {
             const realm = await getRealm();
             realm.write(()=>{
-                realm.create('Repository', {id: data.id , name: updateName}, 'modified');
+                realm.create('Repository', {
+                    id: data.id ,
+                    name: updateName
+                    },
+                    'modified');
             });
             setUpdateName('');
+            setSlideAnimation2(false)
 
         }catch (e) {
             console.log(e)
@@ -46,7 +49,7 @@ const repository = ({data, updateAnimation, deleteItem}) => {
                   name='trash'
                   type='font-awesome'
                   color='#f50'
-                  onPress={deleteItem}
+                  onPress={() => {setDefaultAnimationDialog(true)}}
               />
                 <Icon
                     raised
@@ -67,7 +70,16 @@ const repository = ({data, updateAnimation, deleteItem}) => {
                 }}
                 visible={slideAnimation2}
                 dialogTitle={<DialogTitle title="Digite o novo nome do material selecionado   " />}
-                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
+                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+                footer={
+                <DialogFooter>
+                    <DialogButton
+                        text="atualizar"
+                        bordered
+                        onPress={handleUpdate}
+                    />
+                </DialogFooter>
+                }>
                 <DialogContent>
                     <Form>
                         <Input
@@ -77,14 +89,54 @@ const repository = ({data, updateAnimation, deleteItem}) => {
                             onChangeText={text => setUpdateName(text)}
                         />
                     </Form>
-                    <Form2>
-                        <Button title="atualizar"
-                                onPress={handleUpdate}>
-                        </Button>
-                    </Form2>
-
                 </DialogContent>
             </Dialog>
+
+            <Dialog
+                onDismiss={() => {
+                    setDefaultAnimationDialog(false)
+                }}
+                onTouchOutside={() => {
+                    setDefaultAnimationDialog(false)
+                }}
+                width={0.9}
+                visible={defaultAnimationDialog}
+                rounded
+                actionsBordered
+                dialogTitle={
+                    <DialogTitle
+                        title="ATENÇÃO"
+                        style={{
+                            backgroundColor: '#F7F7F8',
+                        }}
+                        hasTitleBar={false}
+                        align="left"
+                    />
+                }
+                footer={
+                    <DialogFooter>
+                        <DialogButton
+                            text="CANCEL"
+                            bordered
+                            onPress={() => {setDefaultAnimationDialog(false)}}
+                        />
+                        <DialogButton
+                            text="OK"
+                            bordered
+                            onPress={()=> {{
+                                deleteItem();
+                                setDefaultAnimationDialog(false)}}}
+                        />
+                    </DialogFooter>
+                }>
+                <DialogContent
+                    style={{
+                        backgroundColor: '#F7F7F8',
+                    }}>
+                    <Name> Deseja excluir o material {data.name} ?</Name>
+                </DialogContent>
+            </Dialog>
+
         </Container>
     )
 } ;

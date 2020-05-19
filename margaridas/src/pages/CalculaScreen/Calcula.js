@@ -21,15 +21,49 @@ export default function Calcula({route}) {
     const [input, setInput] = useState('');
     const [total,setTotal] = useState(0);
     const [slideAnimation, setSlideAnimation] = useState(false);
+    const [slideAnimation2, setSlideAnimation2] = useState(false);
     const [lucro, setLucro] = useState('');
     const [error, setError] = useState('');
     const [porcentagem, setPorcentagem] = useState(0);
     const [venda, setVenda] = useState(0);
     const [selectedValue, setSelectedValue] = useState('metro');
+    const [tinta, setTinta] = useState('');
 
+    async function saveTinta(value) {
+        const realm = await getRealm();
+        const data = {
+            id: 1,
+            priceTinta: parseInt(value)
+        };
+        realm.write(() => {
+            realm.create('Tinta', data, 'modified');
+        });
+        return data;
+    }
+
+    async function handleAddTinta(){
+        try {
+            const value = await saveTinta(tinta)
+            console.log(value)
+            setTinta('');
+        }
+        catch (e) {
+            setError(true)
+        }
+
+    }
+
+    async function handleDeletTint(){
+        const realm = await getRealm();
+        realm.write(() => {
+            let allTint = realm.objects('Tinta');
+            realm.delete(allTint);
+            console.log(allTint)
+        })
+    }
 
     async function handleVenda(){
-        setVenda(total + total * porcentagem )
+        setVenda((total + total) * porcentagem )
         console.log(venda)
     }
 
@@ -146,14 +180,18 @@ export default function Calcula({route}) {
                     />
                     <Text>  </Text>
                     <Button
-                        title="Calcular preço de venda"
+                        title="Definir valor da tinta"
                         color='#256FC7'
-                        onPress={handleVenda}
+                        onPress={() => setSlideAnimation2(true)}
                     />
 
                 </Form2>
                 <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
-                <TitlePorcentagem> Preço de venda: {venda.toFixed(2)} R$</TitlePorcentagem>
+                <View style={styles.view}>
+                    <TitlePorcentagem> Preço de venda: {venda.toFixed(2)} R$</TitlePorcentagem>
+                    <Text> </Text>
+                    <Button title="Calcular" onPress={handleVenda}> </Button>
+                </View>
                 <TitlePorcentagem> Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
             </Formm>
@@ -170,43 +208,75 @@ export default function Calcula({route}) {
                 dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
                 <DialogContent>
                     <Form>
-                        <Picker
-                            selectedValue={selectedValue}
-                            style={styles.picker}
-                            onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                        >
-                            <Picker.Item label="150%" value={150} />
-                            <Picker.Item label="120%" value={120} />
-                            <Picker.Item label="100%" value={100} />
-                            <Picker.Item label="50%" value={50} />
-                            <Picker.Item label="30%" value={30} />
-                            <Picker.Item label="20%" value={20} />
-                            <Picker.Item label="10%" value={10} />
-                        </Picker>
-
+                        <View style={styles.viewpicker}>
+                            <Picker
+                                selectedValue={selectedValue}
+                                style={styles.picker}
+                                onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+                                <Picker.Item label="150%" value={150} />
+                                <Picker.Item label="120%" value={120} />
+                                <Picker.Item label="100%" value={100} />
+                                <Picker.Item label="50%" value={50} />
+                                <Picker.Item label="30%" value={30} />
+                                <Picker.Item label="20%" value={20} />
+                                <Picker.Item label="10%" value={10} />
+                            </Picker>
+                            <Text>    Automatico</Text>
+                            <Button title="+"
+                                    onPress={handleAddLucro}>
+                            </Button>
+                        </View>
+                        <View style={styles.viewpicker}>
                         <Input
                             error={error}
-                            placeholder="Definir valor de lucro para calculo"
+                            placeholder="Definir lucro"
                             value={`${lucro}`}
                             onChangeText={number => setLucro(Number(number))}
+                            keyboardType="numeric"
+
+                        />
+
+                        <Text>            Manual</Text>
+                            <Button title="+"
+                                    onPress={handleAddPorcentagem}>
+                            </Button>
+                        </View>
+                    </Form>
+
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+                onDismiss={() => {
+                    setSlideAnimation2(false)
+                }}
+                onTouchOutside={() => {
+                    setSlideAnimation2(false)
+                }}
+                visible={slideAnimation2}
+                dialogTitle={<DialogTitle title="Valor da tinta para o calculo                      " />}
+                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
+                <DialogContent>
+                    <Form>
+                        <Input
+                            error={error}
+                            placeholder="Definir preço da tinta"
+                            value={`${tinta}`}
+                            onChangeText={number => setTinta(Number(number))}
                             keyboardType="numeric"
 
                         />
                     </Form>
                     <Form2>
                         <Button title="add"
-                                onPress={handleAddLucro}>
+                                onPress={handleAddTinta}>
                         </Button>
                         <Text> </Text>
-                        <Button title="add p"
-                                onPress={handleAddPorcentagem}>
-                        </Button>
-                        <Text> </Text>
-
-                        <Button title="test"
-                                onPress={handleTest}>
+                        <Button title="del"
+                                onPress={handleDeletTint}>
                         </Button>
                     </Form2>
+
                 </DialogContent>
             </Dialog>
 
@@ -223,9 +293,16 @@ const styles = StyleSheet.create({
     picker:{
         height: 50,
         width: 150,
-        backgroundColor:'#7a36b2',
-        color:'#FFF',
 
+    },
+    view:{
+        flexDirection: 'row',
+        padding: 5,
+
+    },
+    viewpicker:{
+        flexDirection: 'column',
+        padding: 10
     }
 });
 

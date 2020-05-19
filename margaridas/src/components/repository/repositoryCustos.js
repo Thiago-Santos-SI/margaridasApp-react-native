@@ -45,7 +45,7 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
     }
 
     return(
-        <ContainerCustos>
+        <ContainerCustos style={styles.view}>
             <NameItem> {data.name.toUpperCase()}</NameItem>
             <NameCustos>Quantidade comprada: {data.quantidade} {data.unidade} </NameCustos>
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
@@ -75,5 +75,21 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
 
     )
 };
+
+
+const styles = StyleSheet.create({
+    view:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.36,
+        shadowRadius: 6.68,
+
+        elevation: 11
+    }
+})
+
 
 export default repositoryCustos;

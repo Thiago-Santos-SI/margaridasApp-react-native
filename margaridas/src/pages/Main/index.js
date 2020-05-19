@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert, View, Button, StyleSheet, Text, ImageComponent} from 'react-native';
+import {Keyboard, Alert, View, StyleSheet, Text, ImageComponent} from 'react-native';
 import {
     Container,
     Title,
@@ -11,12 +11,9 @@ import {
 
 } from './styles';
 import Repository from '../../components/repository/index';
-import Dialog, {
+import { Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-    DialogTitle,
-    DialogContent,
-    SlideAnimation, DialogFooter, DialogButton,
-} from 'react-native-popup-dialog';
 
 import {Picker} from '@react-native-community/picker';
 import getRealm from '../../services/realm';
@@ -33,42 +30,7 @@ export default function Main({navigation}) {
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [slideAnimation, setSlideAnimation] = useState(false);
     const [tinta, setTinta] = useState('');
-    const [updateName, setUpdateName] = useState('');
 
-
-
-    async function saveTinta(value) {
-        const realm = await getRealm();
-        const data = {
-            id: 1,
-            priceTinta: parseInt(value)
-        };
-        realm.write(() => {
-            realm.create('Tinta', data, 'modified');
-        });
-        return data;
-    }
-
-    async function handleAddTinta(){
-        try {
-            const value = await saveTinta(tinta)
-            console.log(value)
-            setTinta('');
-        }
-        catch (e) {
-            setError(true)
-        }
-
-    }
-
-    async function handleDeletTint(){
-        const realm = await getRealm();
-        realm.write(() => {
-            let allTint = realm.objects('Tinta');
-            realm.delete(allTint);
-            console.log(allTint)
-        })
-    }
 
     async function handleTest(){
         const realm = await getRealm();
@@ -143,13 +105,20 @@ export default function Main({navigation}) {
             <Form>
                 <Title>Materiais</Title>
                 <Button
-                    title="Definir valor da tinta"
-                    color='#256FC7'
-                    onPress={() => {
-                        setSlideAnimation(true)
-                    }}
+                    title="calcular custos   "
+                    iconRight={true}
+                    icon={
+                        <Icon
+                            name="arrow-right"
+                            size={30}
+                            color="white"
+                        />
+                    }
+                    onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}
 
                 />
+
+
             </Form>
             <Form>
                 <Input
@@ -202,12 +171,6 @@ export default function Main({navigation}) {
                     title='Adicionar'
                     onPress={handleAddRepository}>
                 </Button>
-                <Text> </Text>
-                <Button
-                    color='#256FC7'
-                    title='calcular custos'
-                    onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}>
-                </Button>
 
             </Form2>
 
@@ -224,43 +187,6 @@ export default function Main({navigation}) {
                     />
                 )}
             />
-
-            <Dialog
-                onDismiss={() => {
-                    setSlideAnimation(false)
-                }}
-                onTouchOutside={() => {
-                    setSlideAnimation(false)
-                }}
-                visible={slideAnimation}
-                dialogTitle={<DialogTitle title="Valor da tinta para o calculo                      " />}
-                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
-                <DialogContent>
-                    <Form>
-                        <Input
-                            error={error}
-                            placeholder="Definir preço da tinta"
-                            value={`${tinta}`}
-                            onChangeText={number => setTinta(Number(number))}
-                            keyboardType="numeric"
-
-                        />
-                    </Form>
-                    <Form2>
-                        <Button title="add"
-                                onPress={handleAddTinta}>
-                        </Button>
-                        <Text> </Text>
-                        <Button title="del"
-                                onPress={handleDeletTint}>
-                        </Button>
-                    </Form2>
-
-                </DialogContent>
-            </Dialog>
-
-
-
         </Container>
     );
 }
@@ -269,7 +195,8 @@ const styles = StyleSheet.create({
     button: {
         padding: 5,
         backgroundColor: '#FFF',
-        fontFamily: 'Roboto'
+        flex:1,
+        alignSelf: 'center'
     },
     picker:{
         height: 50,

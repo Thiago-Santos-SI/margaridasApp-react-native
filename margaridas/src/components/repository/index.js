@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, Button, View} from 'react-native'
+import {Text, Button, View, StyleSheet} from 'react-native'
 import {
   Container, Name, ContainerIcons, NameQuantidade
 } from './styles';
@@ -10,7 +10,7 @@ import {Form, Input} from "../../pages/Main/styles";
 
 
 
-export const repository = ({data, deleteItem, }) => {
+export default function repository({data, deleteItem}){
     const [updateName, setUpdateName] = useState('');
     const [slideAnimation2, setSlideAnimation2] = useState(false);
     const [defaultAnimationDialog, setDefaultAnimationDialog] = useState(false);
@@ -36,7 +36,7 @@ export const repository = ({data, deleteItem, }) => {
     }
 
     return(
-        <Container>
+        <Container style={styles.view}>
             <View>
                 <Name>Nome: {data.name.toUpperCase()}</Name>
                 <NameQuantidade>Quantidade comprada: {data.quantidade} {data.unidade} </NameQuantidade>
@@ -84,7 +84,7 @@ export const repository = ({data, deleteItem, }) => {
                     <Form>
                         <Input
                             error={error}
-                            placeholder="Nome do material"
+                            placeholder="Novo nome do material"
                             value={`${updateName}`}
                             onChangeText={text => setUpdateName(text)}
                         />
@@ -141,4 +141,16 @@ export const repository = ({data, deleteItem, }) => {
     )
 } ;
 
-export default repository;
+const styles = StyleSheet.create({
+    view:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
+    }
+})

@@ -5,7 +5,7 @@ import {
 } from './styles';
 import { Icon, ThemeProvider } from 'react-native-elements';
 import getRealm from "../../services/realm";
-import Dialog, {DialogContent, DialogTitle, SlideAnimation, DialogButton, DialogFooter} from "react-native-popup-dialog";
+import Dialog, {DialogContent, DialogTitle, SlideAnimation, DialogButton, DialogFooter, ScaleAnimation} from "react-native-popup-dialog";
 import {Form, Input} from "../../pages/Main/styles";
 
 
@@ -62,6 +62,7 @@ export default function repository({data, deleteItem}){
             </ContainerIcons>
 
             <Dialog
+
                 onDismiss={() => {
                     setSlideAnimation2(false)
                 }}
@@ -70,7 +71,10 @@ export default function repository({data, deleteItem}){
                 }}
                 visible={slideAnimation2}
                 dialogTitle={<DialogTitle title="Digite o novo nome do material selecionado   " />}
-                dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+                dialogAnimation={new ScaleAnimation({
+                    initialValue: 0, // optional
+                    useNativeDriver: true, // optional
+                })}
                 footer={
                 <DialogFooter>
                     <DialogButton
@@ -93,6 +97,7 @@ export default function repository({data, deleteItem}){
             </Dialog>
 
             <Dialog
+
                 onDismiss={() => {
                     setDefaultAnimationDialog(false)
                 }}
@@ -103,6 +108,10 @@ export default function repository({data, deleteItem}){
                 visible={defaultAnimationDialog}
                 rounded
                 actionsBordered
+                dialogAnimation={new ScaleAnimation({
+                    initialValue: 0, // optional
+                    useNativeDriver: true, // optional
+                })}
                 dialogTitle={
                     <DialogTitle
                         title="ATENÇÃO"

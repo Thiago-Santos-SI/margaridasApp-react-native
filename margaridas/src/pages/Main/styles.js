@@ -28,6 +28,14 @@ export const Title = styled.Text`
   font-weight: bold;
   padding: 0px 20px;
 `;
+export const TitleCount = styled.Text`
+  font-family: 'Roboto';
+  font-size: 25px;
+  color: #fff;
+  font-weight: bold;
+  padding: 0px 20px;
+`;
+
 
 export const TitleTotal = styled.Text`
   font-size: 32px;
@@ -42,7 +50,7 @@ export const TitlePorcentagem = styled.Text`
 `;
 
 
-export const Formm = styled.View`
+export const FormResults = styled.View`
   background-color: #fff;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;

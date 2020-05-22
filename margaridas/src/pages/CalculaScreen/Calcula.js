@@ -3,7 +3,7 @@ import { Button} from 'react-native-elements';
 import {Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
-    List, Title, Formm, TitleTotal, Form, TitlePorcentagem
+    List, Title, FormResults, TitleTotal, Form, TitlePorcentagem, TitleCount
 } from '../Main/styles';
 import RepositoryCustos from "../../components/repository/repositoryCustos";
 
@@ -28,6 +28,17 @@ export default function Calcula({route}) {
     const [venda, setVenda] = useState(0);
     const [selectedValue, setSelectedValue] = useState('metro');
     const [tinta, setTinta] = useState('');
+    const [count, setCount] = useState('');
+
+    async function CheckItem(){
+        const realm = await getRealm()
+        realm.write(()=>{
+            const data = realm.objects('Repository')
+            const val = data.length
+            setCount(val)
+        })
+
+    }
 
     async function saveTinta(value) {
         const realm = await getRealm();
@@ -143,6 +154,7 @@ export default function Calcula({route}) {
             setRepositories(data);
             setTint(data2)
         }
+        CheckItem()
         loadRepository();
     }, []);
 
@@ -152,7 +164,7 @@ export default function Calcula({route}) {
         >
         <ContainerCustos >
             <Title>Todos seus Materiais</Title>
-
+            <TitleCount>você tem {count} Materiais</TitleCount>
             <List
                 horizontal={true}
                 keyboardShouldPersistTaps="handle"
@@ -171,7 +183,7 @@ export default function Calcula({route}) {
                 )}
             />
 
-            <Formm>
+            <FormResults>
                 <Form2>
                     <Button
                         title="Definir valor de lucro"
@@ -198,7 +210,7 @@ export default function Calcula({route}) {
                 </View>
                 <TitlePorcentagem> Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
-            </Formm>
+            </FormResults>
 
             <Dialog
                 onDismiss={() => {

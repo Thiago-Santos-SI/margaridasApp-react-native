@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert, View, StyleSheet, Text, ImageComponent} from 'react-native';
+import {Keyboard, Alert, View, StyleSheet, Text, ImageComponent, Animated} from 'react-native';
 import {
     Container,
     Title,
@@ -30,6 +30,14 @@ export default function Main({navigation}) {
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [slideAnimation, setSlideAnimation] = useState(false);
     const [tinta, setTinta] = useState('');
+    const [animated, setAnimated] = useState(new Animated.Value(1));
+
+    async function animatedfunction(){
+        Animated.timing(animated, {
+            toValue: 1,
+            duration: 1000
+        }).start();
+    }
 
 
     async function handleTest(){
@@ -72,6 +80,7 @@ export default function Main({navigation}) {
             setInputPrice('');
             setError(false);
             Keyboard.dismiss();
+            animatedfunction()
         } catch (err) {
             setError(true);
         }
@@ -183,13 +192,16 @@ export default function Main({navigation}) {
                 data={repositories}
                 keyExtractor={item => String(item.id)}
                 renderItem={({item}) => (
+                    <Animated.View style={{opacity: animated}}>
                     <Repository
                         data={item}
                         dataTint={tinta}
                         deleteItem={() => handleDeleteRepository(item)}
                     />
+                    </Animated.View>
                 )}
-            />
+                    />
+
         </Container>
     );
 }

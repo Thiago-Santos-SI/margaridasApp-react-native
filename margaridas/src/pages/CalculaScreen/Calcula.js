@@ -178,6 +178,7 @@ export default function Calcula({route}) {
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
+                        valuetint={setTint}
                        // addPrecoVenda={setVenda(total + total)}
                     />
                 )}

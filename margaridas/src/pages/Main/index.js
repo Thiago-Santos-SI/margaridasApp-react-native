@@ -192,13 +192,11 @@ export default function Main({navigation}) {
                 data={repositories}
                 keyExtractor={item => String(item.id)}
                 renderItem={({item}) => (
-                    <Animated.View style={{opacity: animated}}>
                     <Repository
                         data={item}
                         dataTint={tinta}
                         deleteItem={() => handleDeleteRepository(item)}
                     />
-                    </Animated.View>
                 )}
                     />
 

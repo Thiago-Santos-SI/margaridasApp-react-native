@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Button, Keyboard, StyleSheet, Text} from 'react-native'
+import { Button} from 'react-native-elements';
+import {Keyboard, StyleSheet, Text} from 'react-native'
 import {
     NameItem,
     ContainerCustos, NameCustos, NameCusto, NameResult, NameCheck, Name
@@ -12,22 +13,40 @@ import {
  import CheckBox from '@react-native-community/checkbox';
  import getRealm from "../../services/realm";
 
-const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
+const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
 
     const [input, setInput] = useState('');
     const [result, setResult] = useState(0);
     const [error, setError] = useState('');
     const [isSelected, setSelection] = useState(false);
+    const [check, setCheck] = useState(true);
+    const [change, setChange] = useState(true);
+
+    useEffect(() => {
+        async function loadRepository() {
+            const realm = await getRealm();
+            const tint = realm.objects('Tinta');
+            const val = tint.length
+            setChange(val)
+            if (val===0){
+                setCheck(true)
+            }else {
+                setCheck(false)
+                }
+        }
+        loadRepository();
+    }, [addPrecoTotal]);
 
 
     async function handleCompareValue(){
         try {
             const realm = await getRealm();
             const tint = realm.objects('Tinta');
-            for (let p of tint) {
-                const valueTint =  `${p.priceTinta}`
-                //console.log(`  ${p.priceTinta}`);
-                const value = isSelected ? (parseInt(valueTint)+(data.price * input)/data.quantidade) : (data.price * input)/data.quantidade
+            const val = tint.length
+            if (val===0){
+                setSelection(false)
+                setCheck(true)
+                const value = (data.price * input)/data.quantidade
                 if (value == 0 || undefined || null){
                     setError(true);
                 }else {
@@ -37,6 +56,22 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
                     setInput('')
                     setError(false)
                     Keyboard.dismiss();
+                }
+            }else{
+                setCheck(false)
+                for (let p of tint) {
+                    const valueTint =  `${p.priceTinta}`
+                    const value = isSelected ? (parseInt(valueTint)+(data.price * input)/data.quantidade) : (data.price * input)/data.quantidade
+                    if (value == 0 || undefined || null){
+                        setError(true);
+                    }else {
+                        console.log(value)
+                        addPrecoTotal(value)
+                        setResult(value)
+                        setInput('')
+                        setError(false)
+                        Keyboard.dismiss();
+                    }
                 }
             }
         }catch (e) {
@@ -51,6 +86,7 @@ const repositoryCustos = ({data, dataTint, addPrecoTotal}) => {
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
             <Form>
             <CheckBox
+                disabled={check}
                 value={isSelected}
                 onValueChange={setSelection}
                 />

@@ -106,6 +106,8 @@ export default function Main({navigation}) {
                 <Title>Materiais</Title>
                 <Button
                     title="calcular custos   "
+                    raised={true}
+                    color="#7a36b2"
                     iconRight={true}
                     icon={
                         <Icon
@@ -168,6 +170,7 @@ export default function Main({navigation}) {
             <Form2>
                 <Button
                     color='#256FC7'
+                    raised={true}
                     title='Adicionar'
                     onPress={handleAddRepository}>
                 </Button>

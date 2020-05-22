@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
-import {Button, Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
+import { Button} from 'react-native-elements';
+import {Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
     List, Title, Formm, TitleTotal, Form, TitlePorcentagem
@@ -175,12 +175,16 @@ export default function Calcula({route}) {
                 <Form2>
                     <Button
                         title="Definir valor de lucro"
-                        color='#256FC7'
+                        type="outline"
+                        raised={true}
+                        color='#7a36b2'
                         onPress={() => setSlideAnimation(true)}
                     />
                     <Text>  </Text>
                     <Button
                         title="Definir valor da tinta"
+                        type="outline"
+                        raised={true}
                         color='#256FC7'
                         onPress={() => setSlideAnimation2(true)}
                     />

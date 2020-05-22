@@ -44,6 +44,8 @@ export const TitlePorcentagem = styled.Text`
 
 export const Formm = styled.View`
   background-color: #fff;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
 `;
 
 

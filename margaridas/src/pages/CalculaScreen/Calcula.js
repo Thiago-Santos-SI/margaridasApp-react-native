@@ -32,11 +32,12 @@ export default function Calcula({route}) {
 
     async function CheckItem(){
         const realm = await getRealm()
-        realm.write(()=>{
-            const data = realm.objects('Repository')
-            const val = data.length
-            setCount(val)
-        })
+        const data = realm.objects('Repository')
+        const val = data.length
+        setCount("vc tem "+ val +" material")
+        if (val===0){
+            setCount("vc não cadastrou nenhum material ainda")
+        }
 
     }
 
@@ -61,7 +62,6 @@ export default function Calcula({route}) {
         catch (e) {
             setError(true)
         }
-
     }
 
     async function handleDeletTint(){
@@ -164,7 +164,7 @@ export default function Calcula({route}) {
         >
         <ContainerCustos >
             <Title>Todos seus Materiais</Title>
-            <TitleCount>você tem {count} Materiais</TitleCount>
+            <TitleCount>{count}</TitleCount>
             <List
                 horizontal={true}
                 keyboardShouldPersistTaps="handle"

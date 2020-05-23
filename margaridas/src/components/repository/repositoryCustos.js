@@ -3,11 +3,10 @@ import { Button} from 'react-native-elements';
 import {Keyboard, StyleSheet, Text} from 'react-native'
 import {
     NameItem,
-    ContainerCustos, NameCustos, NameCusto, NameResult, NameCheck, Name
+    ContainerCustos, NameCustos, NameCusto, NameCheck
 } from './styles';
 import {
-    Form, Input,
-    InputCustos,Form2,
+    Form, InputCustos,
 } from "../../pages/Main/styles";
 
  import CheckBox from '@react-native-community/checkbox';
@@ -20,14 +19,12 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
     const [error, setError] = useState('');
     const [isSelected, setSelection] = useState(false);
     const [check, setCheck] = useState(true);
-    const [change, setChange] = useState(true);
 
     useEffect(() => {
         async function loadRepository() {
             const realm = await getRealm();
             const tint = realm.objects('Tinta');
             const val = tint.length
-            setChange(val)
             if (val===0){
                 setCheck(true)
             }else {
@@ -47,15 +44,15 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
                 setSelection(false)
                 setCheck(true)
                 const value = (data.price * input)/data.quantidade
-                if (value == 0 || undefined || null){
-                    setError(true);
-                }else {
+                if (!(value == 0 || undefined || null)) {
                     console.log(value)
                     addPrecoTotal(value)
                     setResult(value)
                     setInput('')
                     setError(false)
                     Keyboard.dismiss();
+                } else {
+                    setError(true);
                 }
             }else{
                 setCheck(false)

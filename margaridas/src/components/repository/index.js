@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Text, Button, View, StyleSheet} from 'react-native'
+import React, {useEffect, useState} from 'react';
+import {Text, Button, View, StyleSheet, Animated} from 'react-native'
 import {
   Container, Name, ContainerIcons, NameQuantidade
 } from './styles';
-import { Icon, ThemeProvider } from 'react-native-elements';
+import { Icon} from 'react-native-elements';
 import getRealm from "../../services/realm";
-import Dialog, {DialogContent, DialogTitle, SlideAnimation, DialogButton, DialogFooter, ScaleAnimation} from "react-native-popup-dialog";
+import Dialog, {DialogContent, DialogTitle, DialogButton, DialogFooter, ScaleAnimation} from "react-native-popup-dialog";
 import {Form, Input} from "../../pages/Main/styles";
 
 
@@ -15,7 +15,15 @@ export default function repository({data, deleteItem}){
     const [slideAnimation2, setSlideAnimation2] = useState(false);
     const [defaultAnimationDialog, setDefaultAnimationDialog] = useState(false);
     const [error, setError] = useState('');
+    const [offset, setOffset] = useState(new Animated.Value(50));
 
+    useEffect(()=>{
+        Animated.spring(offset,{
+            toValue: 0,
+            speed: 5,
+            bounciness: 20
+        }).start()
+    },[])
 
     async function handleUpdate(){
         try {
@@ -36,6 +44,7 @@ export default function repository({data, deleteItem}){
     }
 
     return(
+        <Animated.View style={[{transform: [{translateY: offset}]}]}>
         <Container style={styles.view}>
             <View>
                 <Name>Nome: {data.name.toUpperCase()}</Name>
@@ -147,6 +156,7 @@ export default function repository({data, deleteItem}){
             </Dialog>
 
         </Container>
+        </Animated.View>
     )
 } ;
 

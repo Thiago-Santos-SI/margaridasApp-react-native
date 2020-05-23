@@ -28,16 +28,7 @@ export default function Main({navigation}) {
     const [loading, setloading] = useState(false);
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
-    const [slideAnimation, setSlideAnimation] = useState(false);
     const [tinta, setTinta] = useState('');
-    const [animated, setAnimated] = useState(new Animated.Value(1));
-
-    async function animatedfunction(){
-        Animated.timing(animated, {
-            toValue: 1,
-            duration: 1000
-        }).start();
-    }
 
 
     async function handleTest(){
@@ -50,7 +41,8 @@ export default function Main({navigation}) {
         console.log(dado)
     }
 
-    async function saveRepository(valueInputName, valueInputQuant, valueInputPrice, valuePicker) {
+
+    const saveRepository = async (valueInputName, valueInputQuant, valueInputPrice, valuePicker) => {
         const realm = await getRealm();
         //auto-increment
         const ID = realm.objects('Repository').sorted('id', true).length > 0
@@ -67,10 +59,8 @@ export default function Main({navigation}) {
         realm.write(() => {
             realm.create('Repository', data, 'modified');
         });
-
         return data;
     }
-
 
     async function handleAddRepository() {
         try {
@@ -80,13 +70,11 @@ export default function Main({navigation}) {
             setInputPrice('');
             setError(false);
             Keyboard.dismiss();
-            animatedfunction()
         } catch (err) {
             setError(true);
         }
         //setloading(false);
     }
-
 
      const handleDeleteRepository = async (repository) => {
         try {
@@ -128,7 +116,6 @@ export default function Main({navigation}) {
                     onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}
 
                 />
-
 
             </Form>
             <Form>

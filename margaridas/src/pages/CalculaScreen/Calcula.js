@@ -24,14 +24,14 @@ export default function Calcula({route}) {
     const [error, setError] = useState('');
     const [porcentagem, setPorcentagem] = useState(0);
     const [venda, setVenda] = useState(0);
-    const [selectedValue, setSelectedValue] = useState('metro');
+    const [selectedValue, setSelectedValue] = useState(150);
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
 
     async function CheckItem(){
         const realm = await getRealm()
         const data = realm.objects('Repository')
-        const val = data.length
+        const val = data.length;
         setCount("você tem "+ val +" material")
         if (val===0){
             setCount("vc não cadastrou nenhum material ainda")

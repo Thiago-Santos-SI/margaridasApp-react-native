@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Button} from 'react-native-elements';
-import {Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
+import {Text, View, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
     Container, ContainerCustos, Form2, Input, InputCustos,
     List, Title, FormResults, TitleTotal, Form, TitlePorcentagem, TitleCount
@@ -9,11 +9,9 @@ import RepositoryCustos from "../../components/repository/repositoryCustos";
 
 
 import getRealm from "../../services/realm";
-import {Name} from "../../components/repository/styles";
-import RepositoryTest from "../../components/repository/repositoryTest";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
-import Realm from 'realm'
 import {Picker} from "@react-native-community/picker";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Calcula({route}) {
     const [repositories, setRepositories] = useState('');
@@ -34,11 +32,10 @@ export default function Calcula({route}) {
         const realm = await getRealm()
         const data = realm.objects('Repository')
         const val = data.length
-        setCount("vc tem "+ val +" material")
+        setCount("você tem "+ val +" material")
         if (val===0){
             setCount("vc não cadastrou nenhum material ainda")
         }
-
     }
 
     async function saveTinta(value) {
@@ -93,9 +90,9 @@ export default function Calcula({route}) {
     async function handleAddPorcentagem() {
         try {
             await savePorcentagem(selectedValue);
-            console.log(selectedValue)
+            //console.log(selectedValue)
             const realm = await getRealm();
-            let valuePorcentagem = realm.objects('Lucro').filtered('id = 2');
+            let valuePorcentagem = realm.objects('Lucro');
             for (let p of valuePorcentagem) {
                 const val = `${p.priceLucro}`
                 setPorcentagem(parseInt(val)/100)
@@ -111,11 +108,11 @@ export default function Calcula({route}) {
     async function saveLucro(value) {
         const realm = await getRealm();
         const data = {
-            id: 1,
-            priceLucro: parseInt(value)
+            id: 3,
+            pricePercentage: parseInt(value)
         };
         realm.write(() => {
-            realm.create('Lucro', data, 'modified');
+            realm.create('Percentage', data, 'modified');
         });
         return data;
     }
@@ -124,14 +121,15 @@ export default function Calcula({route}) {
         try {
             const value = await saveLucro(lucro)
             console.log(value)
-            setLucro('');
             const realm = await getRealm();
-            let valuePorcentagem = realm.objects('Lucro');
+            let valuePorcentagem = realm.objects('Percentage');
             for (let p of valuePorcentagem) {
-                const val = `${p.priceLucro}`
+                const val = `${p.pricePercentage}`
                 setPorcentagem(parseInt(val)/100)
-                //console.log(porcentagem)
             }
+            //console.log(porcentagem)
+            setLucro('');
+            Keyboard.dismiss();
         }
         catch (e) {
             setError(true);
@@ -141,8 +139,11 @@ export default function Calcula({route}) {
 
     async function handleTest(){
         const realm = await getRealm();
-        let valuePorcentagem = realm.objects('Lucro');
-        console.log(valuePorcentagem)
+        realm.write(()=>{
+            const query = realm.objects('Lucro')
+            realm.delete(query);
+            console.log(query)
+        })
     }
 
 
@@ -238,11 +239,25 @@ export default function Calcula({route}) {
                                 <Picker.Item label="20%" value={20} />
                                 <Picker.Item label="10%" value={10} />
                             </Picker>
-                            <Text>    Automatico</Text>
-                            <Button title="+"
-                                    onPress={handleAddLucro}>
+                            <Text>          Automatico</Text>
+                            <Button title=""
+                                    icon={
+                                        <Icon
+                                            type='font-awesome'
+                                            name="plus"
+                                            size={20}
+                                            color="white"
+                                        />
+                                    }
+                                    onPress={handleAddPorcentagem}>
                             </Button>
                         </View>
+                        <View
+                            style={{
+                                borderLeftWidth: 1,
+                                borderLeftColor: '#333',
+                            }}
+                        />
                         <View style={styles.viewpicker}>
                         <Input
                             error={error}
@@ -250,14 +265,23 @@ export default function Calcula({route}) {
                             value={`${lucro}`}
                             onChangeText={number => setLucro(Number(number))}
                             keyboardType="numeric"
-
                         />
 
                         <Text>            Manual</Text>
-                            <Button title="+"
-                                    onPress={handleAddPorcentagem}>
+                            <Button title=""
+                                    icon={
+                                        <Icon
+                                            type='font-awesome'
+                                            name="plus"
+                                            size={20}
+                                            color="white"
+                                        />
+                                    }
+                                    onPress={handleAddLucro}>
                             </Button>
+
                         </View>
+
                     </Form>
 
                 </DialogContent>

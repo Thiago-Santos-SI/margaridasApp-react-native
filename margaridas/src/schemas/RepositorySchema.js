@@ -10,5 +10,4 @@ export default class RepositorySchema {
       unidade: 'string',
     },
   };
-
 }

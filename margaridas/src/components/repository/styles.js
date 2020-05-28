@@ -14,7 +14,7 @@ export const Container = styled.View`
 export const ContainerCustos = styled.View`
   background-color: #FFF;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-bottom: 15px;
   margin-left: 18px;
 `;

@@ -21,7 +21,8 @@ export default function repository({data, deleteItem}){
         Animated.spring(offset,{
             toValue: 0,
             speed: 5,
-            bounciness: 20
+            bounciness: 20,
+            useNativeDriver: true,
         }).start()
     },[])
 
@@ -65,13 +66,10 @@ export default function repository({data, deleteItem}){
                     name="edit"
                     type='font-awesome'
                     color='#256FC7'
-                    onPress={() => {
-                        setSlideAnimation2(true)
-                    }}/>
+                    onPress={() => {setSlideAnimation2(true)}}/>
             </ContainerIcons>
 
             <Dialog
-
                 onDismiss={() => {
                     setSlideAnimation2(false)
                 }}

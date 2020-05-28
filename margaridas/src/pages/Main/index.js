@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, Alert, View, StyleSheet, Text, ImageComponent, Animated} from 'react-native';
+import {Keyboard, View, StyleSheet} from 'react-native';
 import {
     Container,
     Title,

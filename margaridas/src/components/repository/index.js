@@ -49,7 +49,7 @@ export default function repository({data, deleteItem}){
         <Container style={styles.view}>
             <View>
                 <Name>Nome: {data.name.toUpperCase()}</Name>
-                <NameQuantidade>Quantidade comprada: {data.quantidade} {data.unidade} </NameQuantidade>
+                <NameQuantidade>Quantidade comprada: {data.quantidade.toFixed(2)} {data.unidade} </NameQuantidade>
                 <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
             </View>
 

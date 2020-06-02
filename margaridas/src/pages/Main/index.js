@@ -52,8 +52,8 @@ export default function Main({navigation}) {
         const data = {
             id: ID,
             name: valueInputName,
-            quantidade: valueInputQuant,
-            price: valueInputPrice,
+            quantidade: parseFloat(valueInputQuant),
+            price: parseFloat(valueInputPrice),
             unidade: valuePicker,
         };
         realm.write(() => {
@@ -64,7 +64,7 @@ export default function Main({navigation}) {
 
     async function handleAddRepository() {
         try {
-            await saveRepository(input, inputQuantidade, inputPrice, selectedValue);
+            await saveRepository(input, parseFloat(inputQuantidade), parseFloat(inputPrice), selectedValue);
             setInput('');
             setInputQuantidade('');
             setInputPrice('');
@@ -138,7 +138,7 @@ export default function Main({navigation}) {
                     placeholder="Quantidade comprada"
                     value={`${inputQuantidade}`}
                     editable={!loading}
-                    onChangeText={text => setInputQuantidade(Number(text))}
+                    onChangeText={text => setInputQuantidade((text))}
                     keyboardShouldPersistTaps="handle"
                     keyboardType="numeric"
                 />
@@ -157,7 +157,7 @@ export default function Main({navigation}) {
                     error={error}
                     placeholder="Preço que comprou"
                     value={`${inputPrice}`}
-                    onChangeText={number => setInputPrice(Number(number))}
+                    onChangeText={number => setInputPrice(number)}
                     keyboardType="numeric"
 
                 />

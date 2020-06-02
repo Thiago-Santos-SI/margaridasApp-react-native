@@ -79,7 +79,7 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
     return(
         <ContainerCustos style={styles.view}>
             <NameItem> {data.name.toUpperCase()}</NameItem>
-            <NameCustos>Quantidade comprada: {data.quantidade} {data.unidade} </NameCustos>
+            <NameCustos>Quantidade comprada: {data.quantidade.toFixed(2)} {data.unidade} </NameCustos>
             <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
             <Form>
             <CheckBox

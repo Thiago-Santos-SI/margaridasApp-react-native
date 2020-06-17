@@ -51,23 +51,25 @@ export default function repository({data, deleteItem}){
                 <Name>Nome: {data.name.toUpperCase()}</Name>
                 <NameQuantidade>Quantidade comprada: {data.quantidade.toFixed(2)} {data.unidade} </NameQuantidade>
                 <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
+
+                <View style={styles.viewRow}>
+                    <Icon
+                        raised
+                        name='trash'
+                        type='font-awesome'
+                        color='#f50'
+                        onPress={() => {setDefaultAnimationDialog(true)}}
+                    />
+                    <Icon
+                        raised
+                        name="edit"
+                        type='font-awesome'
+                        color='#256FC7'
+                        onPress={() => {setSlideAnimation2(true)}}/>
+                </View>
             </View>
 
-            <ContainerIcons>
-                <Icon
-                  raised
-                  name='trash'
-                  type='font-awesome'
-                  color='#f50'
-                  onPress={() => {setDefaultAnimationDialog(true)}}
-              />
-                <Icon
-                    raised
-                    name="edit"
-                    type='font-awesome'
-                    color='#256FC7'
-                    onPress={() => {setSlideAnimation2(true)}}/>
-            </ContainerIcons>
+
 
             <Dialog
                 onDismiss={() => {
@@ -167,7 +169,9 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
-
         elevation: 4,
+    },
+    viewRow:{
+        flexDirection: 'row'
     }
 })

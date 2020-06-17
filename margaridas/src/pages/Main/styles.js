@@ -95,8 +95,6 @@ export const ButtonContainer = styled.TouchableOpacity`
 export const InputCustos = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`
-  margin-top: 20px;
-  flex: 1;
   padding: 8px 15px;
   border-radius: 4px;
   font-size: 16px;

@@ -25,7 +25,7 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
             const realm = await getRealm();
             const tint = realm.objects('Tinta');
             const val = tint.length
-            if (val===0){
+            if (val === 0){
                 setCheck(true)
             }else {
                 setCheck(false)
@@ -54,7 +54,7 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
                 } else {
                     setError(true);
                 }
-            }else{
+            }else {
                 setCheck(false)
                 for (let p of tint) {
                     const valueTint =  `${p.priceTinta}`

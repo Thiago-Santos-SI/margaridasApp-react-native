@@ -4,7 +4,7 @@ import {Keyboard, StyleSheet, Text} from 'react-native'
 import {
     NameItem,
     ContainerCustos, NameCustos, NameCusto, NameCheck
-} from './styles';
+} from '../repository/styles';
 import {
     Form, InputCustos,
 } from "../../pages/Main/styles";
@@ -71,6 +71,7 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
                     }
                 }
             }
+
         }catch (e) {
             setError(true)
         }

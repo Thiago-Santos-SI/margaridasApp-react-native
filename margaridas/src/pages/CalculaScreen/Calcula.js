@@ -5,7 +5,7 @@ import {
     Container, ContainerCustos, Form2, Input, InputCustos,
     List, Title, FormResults, TitleTotal, Form, TitlePorcentagem, TitleCount
 } from '../Main/styles';
-import RepositoryCustos from "../../components/repository/repositoryCustos";
+import RepositoryCustos from "../../components/materialsConts/repositoryCustos";
 
 
 import getRealm from "../../services/realm";
@@ -175,12 +175,11 @@ export default function Calcula({route}) {
                 renderItem={({item}) => (
                     <RepositoryCustos
                         data={item}
-                        dataTint={route.params['valorTinta']}
+                        //dataTint={route.params['valorTinta']}
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
                         valuetint={setTint}
-                       // addPrecoVenda={setVenda(total + total)}
                     />
                 )}
             />

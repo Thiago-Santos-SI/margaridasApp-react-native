@@ -28,15 +28,28 @@ export default function Calcula({route}) {
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
 
-    async function CheckItem(){
-        const realm = await getRealm()
-        const data = realm.objects('Repository')
-        const val = data.length;
-        setCount("você tem "+ val +" material")
-        if (val===0){
-            setCount("vc não cadastrou nenhum material ainda")
+    useEffect(() => {
+        async function loadRepository() {
+            const realm = await getRealm();
+            const data = realm.objects('Repository').sorted('name', true);
+            const data2 = realm.objects('Tinta');
+            setRepositories(data);
+            setTint(data2)
         }
-    }
+        async function CheckItem(){
+            const realm = await getRealm()
+            const data = realm.objects('Repository')
+            const val = data.length;
+            setCount("você tem "+ val +" material")
+            if (val===0){
+                setCount("vc não cadastrou nenhum material ainda")
+            }
+        }
+        CheckItem()
+        loadRepository();
+    }, []);
+
+
 
     async function saveTinta(value) {
         const realm = await getRealm();
@@ -146,19 +159,6 @@ export default function Calcula({route}) {
         })
     }
 
-
-    useEffect(() => {
-        async function loadRepository() {
-            const realm = await getRealm();
-            const data = realm.objects('Repository').sorted('name', true);
-            const data2 = realm.objects('Tinta');
-            setRepositories(data);
-            setTint(data2)
-        }
-        CheckItem()
-        loadRepository();
-    }, []);
-
     return (
         <KeyboardAvoidingView
             style={{flex: 1}}
@@ -175,7 +175,7 @@ export default function Calcula({route}) {
                 renderItem={({item}) => (
                     <RepositoryCustos
                         data={item}
-                        //dataTint={route.params['valorTinta']}
+                        dataTint={route.params['valorTinta']}
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}

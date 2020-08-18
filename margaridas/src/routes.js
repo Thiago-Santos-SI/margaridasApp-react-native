@@ -16,35 +16,21 @@ const Tab = createBottomTabNavigator()
 export default function Routes() {
     return (
         <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        let iconName;
-
-                        if (route.name === 'Home') {
-                            iconName = focused
-                                ? 'ios-information-circle'
-                                : 'ios-information-circle-outline';
-                        } else if (route.name === 'Settings') {
-                            iconName = focused ? 'ios-list-box' : 'ios-list';
-                        }
-
-                        // You can return any component that you like here!
-                        return <Ionicons name={iconName} size={size} color={color} />;
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={Main} options={{ title: 'Margaridas app', headerTintColor: '#fff', headerLayoutPreset: 'center' ,
+                    headerStyle: {
+                        backgroundColor: '#7A36B2',
                     },
-                })}
-                tabBarOptions={{
-                    style:{
-                        backgroundColor: '#FFF',
-                    },
-                    activeTintColor: 'tomato',
-                    inactiveTintColor: 'gray',
-
-                }}
-            >
-                <Tab.Screen name="Home" component={Main} />
-                <Tab.Screen name="Settings" component={Calcula} />
-            </Tab.Navigator>
+                    headerTitleStyle:{
+                        textAlign: 'center', alignSelf: 'center', flex: 1
+                    },} } />
+                <Stack.Screen name="CalculaScreen" component={Calcula} options={{ title: '',  headerLayoutPreset: 'center' ,
+                    headerStyle: {
+                        backgroundColor: '#7A36B2',
+                        headerTitleStyle:{
+                            textAlign: 'center', alignSelf: 'center', flex: 1
+                        }}}}/>
+                    </Stack.Navigator>
         </NavigationContainer>
     );
 }

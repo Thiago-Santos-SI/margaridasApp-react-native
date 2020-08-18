@@ -114,9 +114,7 @@ export default function Main({navigation}) {
                         />
                     }
                     onPress={() => navigation.navigate('CalculaScreen', {valorTinta:tinta})}
-
                 />
-
             </Form>
             <Form>
                 <Input

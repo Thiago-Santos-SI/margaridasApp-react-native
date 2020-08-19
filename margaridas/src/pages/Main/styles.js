@@ -36,17 +36,32 @@ export const TitleCount = styled.Text`
   padding: 0px 20px;
 `;
 
+export const PequenoTitleTotal = styled.Text`
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  margin-left: 35px;
+`;
 
 export const TitleTotal = styled.Text`
   font-size: 32px;
-  color: #333;
+  color: #2480f1;
   font-weight: bold;
+  margin-left: 35px;
+`;
+
+export const TitleVenda = styled.Text`
+  font-size: 32px;
+  color: #36ad4a;
+  font-weight: bold;
+  margin-left: 35px;
 `;
 
 export const TitlePorcentagem = styled.Text`
-  font-size: 27px;
+  font-size: 24px;
   color: #333;
   font-weight: bold;
+  margin-left: 30px;
 `;
 
 
@@ -63,12 +78,31 @@ export const Form = styled.View`
   padding: 0 20px;
 `;
 
+export const FormListTint = styled.View`
+  flex-direction: row;
+  margin-top: 30px;
+  padding: 0 30px;
+`;
+
+
 export const Form2 = styled.View`
   flex-direction: row;
   margin-top: 10px;
   padding: 0 20px;
   justify-content: center;
 
+`;
+
+export const InputTint = styled.TextInput.attrs({
+  placeholderTextColor: '#999',
+})`
+  flex: 1;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background: #fff;
+  border: 2px solid ${props => (props.error ? '#FF7272' : '#333')};
 `;
 
 export const Input = styled.TextInput.attrs({

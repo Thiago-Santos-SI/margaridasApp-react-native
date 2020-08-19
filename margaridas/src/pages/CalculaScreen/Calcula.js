@@ -1,9 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import { Button} from 'react-native-elements';
-import {Text, View, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
+import {Alert, Text, View, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
-    Container, ContainerCustos, Form2, Input, InputCustos,
-    List, Title, FormResults, TitleTotal, Form, TitlePorcentagem, TitleCount
+    Container,
+    ContainerCustos,
+    Form2,
+    Input,
+    InputCustos,
+    List,
+    Title,
+    FormResults,
+    TitleTotal,
+    Form,
+    TitlePorcentagem,
+    TitleCount,
+    FormListTint,
+    InputTint,
+    PequenoTitleTotal,
+    TitleVenda
 } from '../Main/styles';
 import RepositoryCustos from "../../components/materialsConts/repositoryCustos";
 
@@ -12,6 +26,9 @@ import getRealm from "../../services/realm";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
 import {Picker} from "@react-native-community/picker";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {Name, NameQuantidade} from "../../components/repository/styles";
+import Slider from '@react-native-community/slider';
+
 
 export default function Calcula({route}) {
     const [repositories, setRepositories] = useState('');
@@ -27,6 +44,7 @@ export default function Calcula({route}) {
     const [selectedValue, setSelectedValue] = useState(150);
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
+    const [tintForFunction, setTintForFunction] = useState('');
 
     useEffect(() => {
         async function loadRepository() {
@@ -49,6 +67,16 @@ export default function Calcula({route}) {
         loadRepository();
     }, []);
 
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Alert Title",
+            "My Alert Msg",
+            [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        );
+
 
 
     async function saveTinta(value) {
@@ -63,22 +91,31 @@ export default function Calcula({route}) {
         return data;
     }
 
-    async function handleAddTinta(){
+    async function handleAddTint(){
         try {
             const value = await saveTinta(tinta)
             console.log(value)
             setTinta('');
+            const realm = await getRealm();
+            let valueTintInDataBase = realm.objects('Tinta');
+            for (let p of valueTintInDataBase) {
+                const val = `${p.priceTinta}`
+                setTintForFunction(val + 'R$')
+            }
         }
         catch (e) {
+            console.log(e)
             setError(true)
         }
     }
 
-    async function handleDeletTint(){
+
+    async function handleDeleteTint(){
         const realm = await getRealm();
         realm.write(() => {
             let allTint = realm.objects('Tinta');
             realm.delete(allTint);
+            setTintForFunction('Nenhum preço definido')
             console.log(allTint)
         })
     }
@@ -203,12 +240,20 @@ export default function Calcula({route}) {
                     />
 
                 </Form2>
-                <TitleTotal> Custo Total: {total.toFixed(2)} R$</TitleTotal>
                 <View style={styles.view}>
-                    <TitlePorcentagem> Preço de venda: {venda.toFixed(2)} R$</TitlePorcentagem>
-                    <Text> </Text>
-                    <Button title="Calcular" onPress={handleVenda}> </Button>
+                    <View style={styles.viewResults}>
+                        <PequenoTitleTotal> Valor total</PequenoTitleTotal>
+                        <TitleTotal>R$ {total.toFixed(2)} </TitleTotal>
+                    </View>
+                    <View style={{padding: 20}}/>
+
+                    <View style={styles.viewResults}>
+                        <PequenoTitleTotal>Preço de venda</PequenoTitleTotal>
+                        <TitleVenda>R$ {venda.toFixed(2)}</TitleVenda>
+                    </View>
+
                 </View>
+
                 <TitlePorcentagem> Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
             </FormResults>
@@ -225,31 +270,50 @@ export default function Calcula({route}) {
                 dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
                 <DialogContent>
                     <Form>
-                        <View style={styles.viewpicker}>
-                            <Picker
-                                selectedValue={selectedValue}
-                                style={styles.picker}
-                                onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-                                <Picker.Item label="150%" value={150} />
-                                <Picker.Item label="120%" value={120} />
-                                <Picker.Item label="100%" value={100} />
-                                <Picker.Item label="50%" value={50} />
-                                <Picker.Item label="30%" value={30} />
-                                <Picker.Item label="20%" value={20} />
-                                <Picker.Item label="10%" value={10} />
-                            </Picker>
-                            <Text>          Automatico</Text>
-                            <Button title=""
+                        <View>
+                        <View style={styles.viewGuide}>
+                            <Button title='  guia'
                                     icon={
                                         <Icon
                                             type='font-awesome'
-                                            name="plus"
-                                            size={20}
+                                            name="book"
+                                            size={15}
                                             color="white"
                                         />
                                     }
-                                    onPress={handleAddPorcentagem}>
+                                    onPress={createTwoButtonAlert}>
                             </Button>
+
+                        </View>
+                        <View style={styles.viewBig}>
+                        <View style={styles.viewpicker}>
+                            <Slider
+                                style={{width: 200, height: 40}}
+                                minimumValue={0}
+                                maximumValue={100}
+                                minimumTrackTintColor="#000"
+                                maximumTrackTintColor="#000000"
+                                onValueChange={(item) => setSelectedValue(item)}
+                            />
+                            <Text>                          {selectedValue.toFixed(1)} %</Text>
+                            <Text>
+
+                            </Text>
+                            <Text>                  Automatico</Text>
+                            <View style={styles.buttonPLus}>
+                                <Button title=""
+                                        icon={
+                                            <Icon
+                                                type='font-awesome'
+                                                name="plus"
+                                                size={20}
+                                                color="white"
+                                            />
+                                        }
+                                        onPress={handleAddPorcentagem}>
+                                </Button>
+                            </View>
+
                         </View>
                         <View
                             style={{
@@ -267,20 +331,24 @@ export default function Calcula({route}) {
                         />
 
                         <Text>            Manual</Text>
-                            <Button title=""
-                                    icon={
-                                        <Icon
-                                            type='font-awesome'
-                                            name="plus"
-                                            size={20}
-                                            color="white"
-                                        />
-                                    }
-                                    onPress={handleAddLucro}>
-                            </Button>
+                            <View style={styles.buttonPLus}>
+                                <Button title=""
+                                        icon={
+                                            <Icon
+                                                type='font-awesome'
+                                                name="plus"
+                                                size={20}
+                                                color="white"
+                                            />
+                                        }
+                                        onPress={handleAddLucro}>
+                                </Button>
+                            </View>
+
 
                         </View>
-
+                        </View>
+                        </View>
                     </Form>
 
                 </DialogContent>
@@ -297,23 +365,52 @@ export default function Calcula({route}) {
                 dialogTitle={<DialogTitle title="Valor da tinta para o calculo                      " />}
                 dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
                 <DialogContent>
+                    <Form2>
+                        <View style={styles.view}>
+                            <Button title='  guia'
+                                    icon={
+                                        <Icon
+                                            type='font-awesome'
+                                            name="book"
+                                            size={15}
+                                            color="white"
+                                        />
+                                    }
+                                    onPress={createTwoButtonAlert}>
+                            </Button>
+                        </View>
+
+                    </Form2>
+
                     <Form>
-                        <Input
+                        <InputTint
                             error={error}
-                            placeholder="Definir preço da tinta"
+                            placeholder="Preço que comprou a tinta"
                             value={`${tinta}`}
                             onChangeText={number => setTinta(Number(number))}
                             keyboardType="numeric"
 
                         />
                     </Form>
+                    <FormListTint>
+                        <NameQuantidade>Valor de tinta atual: {tintForFunction}</NameQuantidade>
+                    </FormListTint>
+
                     <Form2>
-                        <Button title="add"
-                                onPress={handleAddTinta}>
+                        <Button title="confirmar"
+                                onPress={() => {
+                                    {
+                                        handleAddTint();
+                                    }
+                                }}>
                         </Button>
                         <Text> </Text>
-                        <Button title="del"
-                                onPress={handleDeletTint}>
+                        <Button title="deletar preço de tinta"
+                                onPress={() => {
+                                    {
+                                        handleDeleteTint();
+                                    }
+                                }}>
                         </Button>
                     </Form2>
 
@@ -340,10 +437,27 @@ const styles = StyleSheet.create({
         padding: 5,
 
     },
-    viewpicker:{
+    viewResults:{
         flexDirection: 'column',
-        padding: 10
-    }
+    },
+    viewGuide:{
+        padding: 5,
+        width: 100,
+        alignContent: 'center',
+        alignSelf: 'center'
+    },
+    viewBig:{
+        marginTop:10,
+        flexDirection: 'row',
+        padding: 5,
+
+    },
+    buttonPLus:{
+        width: 50,
+        alignContent: 'center',
+        alignSelf: 'center'
+
+    },
 });
 
 Calcula.navigationOptions = {

@@ -27,9 +27,7 @@ export default function Routes() {
                 <Stack.Screen name="CalculaScreen" component={Calcula} options={{ title: '',  headerLayoutPreset: 'center' ,
                     headerStyle: {
                         backgroundColor: '#7A36B2',
-                        headerTitleStyle:{
-                            textAlign: 'center', alignSelf: 'center', flex: 1
-                        }}}}/>
+                       }}}/>
                     </Stack.Navigator>
         </NavigationContainer>
     );

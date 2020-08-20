@@ -42,7 +42,6 @@ export default function Calcula({route}) {
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
     const [tintForFunction, setTintForFunction] = useState('');
-    const [result, setResult] = useState('');
 
     async function handleAddSale(){
         async function SaveValueSale(a, b, c){
@@ -169,13 +168,11 @@ export default function Calcula({route}) {
     async function handleAddPorcentagem() {
         try {
             await savePorcentagem(selectedValue);
-            //console.log(selectedValue)
             const realm = await getRealm();
             let valuePorcentagem = realm.objects('Lucro');
             for (let p of valuePorcentagem) {
                 const val = `${p.priceLucro}`
                 setPorcentagem(parseInt(val)/100)
-                //console.log(porcentagem)
             }
             setError(false);
             Keyboard.dismiss();
@@ -206,7 +203,6 @@ export default function Calcula({route}) {
                 const val = `${p.pricePercentage}`
                 setPorcentagem(parseInt(val)/100)
             }
-            //console.log(porcentagem)
             setLucro('');
             Keyboard.dismiss();
         }
@@ -237,8 +233,6 @@ export default function Calcula({route}) {
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
-                        result={result}
-                        setResult={setResult}
                         UpdateFunctionVenda={() => handleAddSale()}
                     />
                 )}

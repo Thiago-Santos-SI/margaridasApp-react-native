@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Keyboard, View, StyleSheet} from 'react-native';
+import {Keyboard, StyleSheet} from 'react-native';
 import {
     Container,
     Title,
     Form,
     Input,
     List,
-    Loading,
     Form2,
-
 } from './styles';
 import Repository from '../../components/repository/index';
 import { Button} from 'react-native-elements';
@@ -29,17 +27,6 @@ export default function Main({navigation}) {
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [tinta, setTinta] = useState('');
-
-
-    async function handleTest(){
-        const realm = await getRealm();
-        const tint = realm.objects('Tinta');
-        for (let p of tint) {
-            console.log(`  ${p.priceTinta}`);
-        }
-        const dado = realm.objects('Tinta')[0];
-        console.log(dado)
-    }
 
 
     const saveRepository = async (valueInputName, valueInputQuant, valueInputPrice, valuePicker) => {
@@ -182,8 +169,8 @@ export default function Main({navigation}) {
                         dataTint={tinta}
                         deleteItem={() => handleDeleteRepository(item)}
                     />
-                )}
-                    />
+                    )}
+            />
 
         </Container>
     );

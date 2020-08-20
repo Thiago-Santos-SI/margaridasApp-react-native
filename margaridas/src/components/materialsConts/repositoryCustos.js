@@ -12,10 +12,11 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import getRealm from "../../services/realm";
 
-const repositoryCustos = ({data, addPrecoTotal, result, setResult, UpdateFunctionVenda}) => {
+const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
 
     const [input, setInput] = useState('');
     const [error, setError] = useState('');
+    const [result, setResult] = useState('');
     const [isSelected, setSelection] = useState(false);
     const [check, setCheck] = useState(true);
 
@@ -46,7 +47,7 @@ const repositoryCustos = ({data, addPrecoTotal, result, setResult, UpdateFunctio
                 if (!(value == 0 || undefined || null)) {
                     console.log(value)
                     addPrecoTotal(value)
-                    setResult(value)
+                    Number(setResult(value))
                     setInput('')
                     setError(false)
                     Keyboard.dismiss();
@@ -63,7 +64,7 @@ const repositoryCustos = ({data, addPrecoTotal, result, setResult, UpdateFunctio
                     }else {
                         console.log(value)
                         addPrecoTotal(value)
-                        setResult(value)
+                        Number(setResult(value))
                         setInput('')
                         setError(false)
                         Keyboard.dismiss();
@@ -107,7 +108,7 @@ const repositoryCustos = ({data, addPrecoTotal, result, setResult, UpdateFunctio
             />
 
 
-            <NameCusto>Custo do produto: {result} R$ </NameCusto>
+            <NameCusto>Custo do produto: {Number(result).toFixed(2)} R$ </NameCusto>
         </ContainerCustos>
     )
 };

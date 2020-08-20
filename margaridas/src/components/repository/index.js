@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, Button, View, StyleSheet, Animated} from 'react-native'
 import {
-  Container, Name, ContainerIcons, NameQuantidade
+    Container, Name, ContainerIcons, NameQuantidade, NameGrande
 } from './styles';
 import { Icon} from 'react-native-elements';
 import getRealm from "../../services/realm";
@@ -47,12 +47,19 @@ export default function repository({data, deleteItem}){
     return(
         <Animated.View style={[{transform: [{translateY: offset}]}]}>
         <Container style={styles.view}>
-            <View>
-                <Name>Nome: {data.name.toUpperCase()}</Name>
-                <NameQuantidade>Quantidade comprada: {data.quantidade.toFixed(2)} {data.unidade} </NameQuantidade>
-                <Name>preço que comprou: {data.price.toFixed(2)}R$</Name>
+            <View style={styles.viewRow}>
+                <View style={{maxWidth: '80%'}}>
+                    <Name>Nome</Name>
+                    <NameGrande>{data.name.toUpperCase()}</NameGrande>
 
-                <View style={styles.viewRow}>
+                    <Name>Quantidade comprada</Name>
+                    <NameGrande>{data.quantidade.toFixed(2)} {data.unidade}</NameGrande>
+
+                    <Name>preço que comprou</Name>
+                    <NameGrande>{data.price.toFixed(2)}R$</NameGrande>
+                </View>
+
+                <View>
                     <Icon
                         raised
                         name='trash'
@@ -170,8 +177,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
+        justifyContent: 'space-between'
     },
     viewRow:{
         flexDirection: 'row'
+    },
+    icons:{
+        marginLeft: 50
     }
 })

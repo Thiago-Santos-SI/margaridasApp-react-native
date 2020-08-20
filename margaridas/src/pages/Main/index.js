@@ -100,7 +100,7 @@ export default function Main({navigation}) {
     return (
         <Container>
             <Form>
-                <Title>Materiais</Title>
+                <Title>Cadastro</Title>
                 <Button
                     title="calcular custos   "
                     raised={true}
@@ -170,7 +170,7 @@ export default function Main({navigation}) {
                 </Button>
 
             </Form2>
-
+            <Title> Materiais</Title>
             <List
                 keyboardShouldPersistTaps="handle"
                 dataTint={repositoriesTint}

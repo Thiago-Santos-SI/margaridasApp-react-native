@@ -7,7 +7,7 @@ export const Container = styled.View`
   border-radius: 4px;
   margin-bottom: 15px;
   flex-direction: row;
-  
+  justify-content: space-between;
 
 `;
 
@@ -19,10 +19,21 @@ export const ContainerCustos = styled.View`
   margin-left: 18px;
 `;
 
+
 export const Name = styled.Text`
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   color: #333;
+    margin-left: 15px;
+    margin-top: 5px;
+
+`;
+
+export const NameGrande = styled.Text`
+  font-weight: bold;
+  font-size: 22px;
+  color: #333;
+  margin-left: 15px;
   
 `;
 

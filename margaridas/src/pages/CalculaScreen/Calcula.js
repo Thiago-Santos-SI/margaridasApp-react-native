@@ -2,11 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { Button} from 'react-native-elements';
 import {Alert, Text, View, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
 import {
-    Container,
     ContainerCustos,
     Form2,
     Input,
-    InputCustos,
     List,
     Title,
     FormResults,
@@ -24,9 +22,8 @@ import RepositoryCustos from "../../components/materialsConts/repositoryCustos";
 
 import getRealm from "../../services/realm";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
-import {Picker} from "@react-native-community/picker";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {Name, NameQuantidade} from "../../components/repository/styles";
+import {NameQuantidade} from "../../components/repository/styles";
 import Slider from '@react-native-community/slider';
 
 
@@ -40,11 +37,42 @@ export default function Calcula({route}) {
     const [lucro, setLucro] = useState('');
     const [error, setError] = useState('');
     const [porcentagem, setPorcentagem] = useState(0);
-    const [venda, setVenda] = useState(0);
-    const [selectedValue, setSelectedValue] = useState(150);
+    const [venda, setVenda] = useState((0).toFixed(2));
+    const [selectedValue, setSelectedValue] = useState(0);
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
     const [tintForFunction, setTintForFunction] = useState('');
+    const [result, setResult] = useState('');
+
+    async function handleAddSale(){
+        async function SaveValueSale(a, b, c){
+            const realm = await getRealm();
+            const data = {
+                id: 1,
+                Sale: parseFloat(Number((a+b)*c))
+            };
+            realm.write(() => {
+                realm.create('Sale', data, 'modified');
+            });
+            return data;
+        }
+        try {
+            const value = await SaveValueSale(total, total, porcentagem)
+            console.log(value)
+            const realm = await getRealm();
+            let valueSale = realm.objects('Sale');
+            for (let p of valueSale) {
+                const val = Number(`${p.Sale}`)
+                setVenda(val.toFixed(2))
+                console.log(venda)
+            }
+        }
+        catch (e) {
+            console.log(e)
+            setError(true)
+        }
+    }
+
 
     useEffect(() => {
         async function loadRepository() {
@@ -62,6 +90,11 @@ export default function Calcula({route}) {
             if (val===0){
                 setCount("vc não cadastrou nenhum material ainda")
             }
+            let valueTintInDataBase = realm.objects('Tinta');
+            for (let p of valueTintInDataBase) {
+                const val = `${p.priceTinta}`
+                setTintForFunction(val + 'R$')
+            }
         }
         CheckItem()
         loadRepository();
@@ -77,8 +110,6 @@ export default function Calcula({route}) {
             { cancelable: false }
         );
 
-
-
     async function saveTinta(value) {
         const realm = await getRealm();
         const data = {
@@ -90,6 +121,8 @@ export default function Calcula({route}) {
         });
         return data;
     }
+
+
 
     async function handleAddTint(){
         try {
@@ -120,10 +153,6 @@ export default function Calcula({route}) {
         })
     }
 
-    async function handleVenda(){
-        setVenda((total + total) * porcentagem )
-        console.log(venda)
-    }
 
     async function savePorcentagem(value) {
         const realm = await getRealm();
@@ -187,14 +216,6 @@ export default function Calcula({route}) {
         }
     }
 
-    async function handleTest(){
-        const realm = await getRealm();
-        realm.write(()=>{
-            const query = realm.objects('Lucro')
-            realm.delete(query);
-            console.log(query)
-        })
-    }
 
     return (
         <KeyboardAvoidingView
@@ -216,7 +237,9 @@ export default function Calcula({route}) {
                         value={input}
                         onChangeText={setInput}
                         addPrecoTotal={(valor) => setTotal(state => state + valor)}
-                        valuetint={setTint}
+                        result={result}
+                        setResult={setResult}
+                        UpdateFunctionVenda={() => handleAddSale()}
                     />
                 )}
             />
@@ -249,7 +272,7 @@ export default function Calcula({route}) {
 
                     <View style={styles.viewResults}>
                         <PequenoTitleTotal>Preço de venda</PequenoTitleTotal>
-                        <TitleVenda>R$ {venda.toFixed(2)}</TitleVenda>
+                        <TitleVenda>R$ {venda}</TitleVenda>
                     </View>
 
                 </View>
@@ -310,7 +333,12 @@ export default function Calcula({route}) {
                                                 color="white"
                                             />
                                         }
-                                        onPress={handleAddPorcentagem}>
+                                        onPress={() => {
+                                            {
+                                                handleAddPorcentagem();
+                                                setSlideAnimation(false)
+                                            }
+                                        }}>
                                 </Button>
                             </View>
 
@@ -344,8 +372,6 @@ export default function Calcula({route}) {
                                         onPress={handleAddLucro}>
                                 </Button>
                             </View>
-
-
                         </View>
                         </View>
                         </View>

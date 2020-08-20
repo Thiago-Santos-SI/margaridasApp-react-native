@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Button} from 'react-native-elements';
 import {Keyboard, StyleSheet, Text} from 'react-native'
 import {
@@ -9,13 +9,12 @@ import {
     Form, InputCustos,
 } from "../../pages/Main/styles";
 
- import CheckBox from '@react-native-community/checkbox';
- import getRealm from "../../services/realm";
+import CheckBox from '@react-native-community/checkbox';
+import getRealm from "../../services/realm";
 
-const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
+const repositoryCustos = ({data, addPrecoTotal, result, setResult, UpdateFunctionVenda}) => {
 
     const [input, setInput] = useState('');
-    const [result, setResult] = useState(0);
     const [error, setError] = useState('');
     const [isSelected, setSelection] = useState(false);
     const [check, setCheck] = useState(true);
@@ -101,12 +100,15 @@ const repositoryCustos = ({data, valuetint, addPrecoTotal}) => {
             <Text> </Text>
             <Button title="calcular"
                     color='#256FC7'
-                    onPress={handleCompareValue}>
-            </Button>
+                    onPress={() => {{
+                            handleCompareValue();
+                            UpdateFunctionVenda();
+                        }}}
+            />
 
-            <NameCusto>Custo do produto: {result.toFixed(2)} R$ </NameCusto>
+
+            <NameCusto>Custo do produto: {result} R$ </NameCusto>
         </ContainerCustos>
-
     )
 };
 

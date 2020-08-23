@@ -4,19 +4,50 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   background-color: #fff;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 9px;
   margin-bottom: 15px;
   flex-direction: row;
+  display: flex;
+  margin-left: 25px;
+  margin-right: 25px;
+`;
+
+export const ContainerIcons = styled.View`
+  display: flex;
   justify-content: space-between;
+  
+`;
+
+export const ContainerCustoProduto = styled.View`
+  display: flex;
+  
+`;
+
+export const ContainerPrecoVenda = styled.View`
+  display: flex;
+  margin-right: 50px;
+    margin-top: 10px;
 
 `;
+
+export const ContainerValorTotal = styled.View`
+  flex: 1;
+  margin-right: 50px;
+  margin-top: 10px;
+
+`;
+
+
 
 export const ContainerCustos = styled.View`
   background-color: #FFF;
   padding: 20px;
+  display: flex;
   border-radius: 10px;
   margin-bottom: 15px;
   margin-left: 18px;
+  margin-right: 18px;
+  height: auto;
 `;
 
 
@@ -48,7 +79,8 @@ export const NameCustos = styled.Text`
   font-weight: bold;
   font-size: 18px;
   color: #333;
-  
+  margin-left: 15px;
+    margin-top: 5px;
 `;
 
 export const NameItem = styled.Text`
@@ -62,8 +94,10 @@ export const NameItem = styled.Text`
 
 export const NameCusto = styled.Text`
   font-weight: bold;
-  font-size: 25px;
+  font-size: 22px;
   color: #333;
+  margin-left: 15px;
+    margin-top: 5px;
  
 `;
 
@@ -89,17 +123,4 @@ export const Description = styled.Text.attrs({
   margin-top: 5px;
   line-height: 20px;
 `;
-
-
-
-export const ContainerIcons = styled.View`
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 28px;
-  margin-top: -20px;
-`;
-
-
-
-
 

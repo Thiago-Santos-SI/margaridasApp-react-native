@@ -17,13 +17,17 @@ import {
     PequenoTitleTotal,
     TitleVenda
 } from '../Main/styles';
-import RepositoryCustos from "../../components/materialsConts/repositoryCustos";
+import RepositoryCustos, {screenWidth} from "../../components/materialsConts/repositoryCustos";
 
 
 import getRealm from "../../services/realm";
 import Dialog, {DialogContent, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {NameQuantidade} from "../../components/repository/styles";
+import {
+    ContainerPrecoVenda,
+    ContainerValorTotal,
+    NameQuantidade
+} from "../../components/repository/styles";
 import Slider from '@react-native-community/slider';
 
 
@@ -42,13 +46,35 @@ export default function Calcula({route}) {
     const [tinta, setTinta] = useState('');
     const [count, setCount] = useState('');
     const [tintForFunction, setTintForFunction] = useState('');
+    const [hideCard, setHideCard] = useState(true);
+
+
+
+    useEffect(()=>{
+        const HandleHideCard = () =>{
+            setHideCard(false)
+        }
+        Keyboard.addListener('keyboardDidShow', HandleHideCard)
+
+        const HandleShowCard = () =>{
+            setHideCard(true)
+        }
+        Keyboard.addListener('keyboardDidHide', HandleShowCard)
+
+
+        return () => {
+            Keyboard.removeListener('keyboardDidShow', HandleHideCard)
+            Keyboard.removeListener('keyboardDidHide', HandleShowCard)
+        }
+
+    },[])
 
     async function handleAddSale(){
         async function SaveValueSale(a, b, c){
             const realm = await getRealm();
             const data = {
                 id: 1,
-                Sale: parseFloat(Number((a+b)*c))
+                Sale: Number(parseFloat(((a + b) * c)))
             };
             realm.write(() => {
                 realm.create('Sale', data, 'modified');
@@ -169,8 +195,8 @@ export default function Calcula({route}) {
         try {
             await savePorcentagem(selectedValue);
             const realm = await getRealm();
-            let valuePorcentagem = realm.objects('Lucro');
-            for (let p of valuePorcentagem) {
+            let valueProfit = realm.objects('Lucro');
+            for (let p of valueProfit) {
                 const val = `${p.priceLucro}`
                 setPorcentagem(parseInt(val)/100)
             }
@@ -198,8 +224,8 @@ export default function Calcula({route}) {
             const value = await saveLucro(lucro)
             console.log(value)
             const realm = await getRealm();
-            let valuePorcentagem = realm.objects('Percentage');
-            for (let p of valuePorcentagem) {
+            let valuePercent = realm.objects('Percentage');
+            for (let p of valuePercent) {
                 const val = `${p.pricePercentage}`
                 setPorcentagem(parseInt(val)/100)
             }
@@ -218,9 +244,9 @@ export default function Calcula({route}) {
             style={{flex: 1}}
         >
         <ContainerCustos >
-            <Title>Todos seus Materiais</Title>
             <TitleCount>{count}</TitleCount>
             <List
+                snapToInterval={screenWidth}
                 horizontal={true}
                 keyboardShouldPersistTaps="handle"
                 dataTint={tint}
@@ -238,7 +264,8 @@ export default function Calcula({route}) {
                 )}
             />
 
-            <FormResults>
+            {hideCard && (
+                <FormResults>
                 <Form2>
                     <Button
                         title="Definir valor de lucro"
@@ -257,23 +284,23 @@ export default function Calcula({route}) {
                     />
 
                 </Form2>
-                <View style={styles.view}>
-                    <View style={styles.viewResults}>
-                        <PequenoTitleTotal> Valor total</PequenoTitleTotal>
-                        <TitleTotal>R$ {total.toFixed(2)} </TitleTotal>
-                    </View>
-                    <View style={{padding: 20}}/>
+                <View style={{flexDirection: "row"}}>
 
-                    <View style={styles.viewResults}>
+                    <ContainerValorTotal>
+                        <PequenoTitleTotal> Valor total</PequenoTitleTotal>
+                        <TitleTotal>R$ {total.toFixed(1)} </TitleTotal>
+                    </ContainerValorTotal>
+
+                    <ContainerPrecoVenda>
                         <PequenoTitleTotal>Preço de venda</PequenoTitleTotal>
                         <TitleVenda>R$ {venda}</TitleVenda>
-                    </View>
+                    </ContainerPrecoVenda>
 
                 </View>
 
-                <TitlePorcentagem> Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
+                <TitlePorcentagem>Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
-            </FormResults>
+            </FormResults>)}
 
             <Dialog
                 onDismiss={() => {

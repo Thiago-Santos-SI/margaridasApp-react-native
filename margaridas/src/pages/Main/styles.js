@@ -22,8 +22,7 @@ export const ContainerCustos = styled(LinearGradient).attrs({
 `;
 
 export const Title = styled.Text`
-  font-family: 'Roboto';
-  font-size: 32px;
+  font-size: 26px;
   color: #fff;
   font-weight: bold;
   padding: 0px 20px;
@@ -58,8 +57,9 @@ export const TitleVenda = styled.Text`
 `;
 
 export const TitlePorcentagem = styled.Text`
-  font-size: 24px;
+  font-size: 20px;
   color: #333;
+  margin-top: 5px;
   font-weight: bold;
   margin-left: 30px;
 `;
@@ -69,6 +69,10 @@ export const FormResults = styled.View`
   background-color: #fff;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
 `;
 
 
@@ -111,7 +115,7 @@ export const Input = styled.TextInput.attrs({
   flex: 1;
   padding: 8px 15px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 13px;
   color: #333;
   background: #fff;
   border: 2px solid ${props => (props.error ? '#FF7272' : '#FFF')};
@@ -153,8 +157,8 @@ export const IconAdd = styled(IconMaterialIcons).attrs({
 `;
 
 export const List = styled.FlatList.attrs({
-  contentContainerStyle: {paddingHorizontal: 20},
-  showsVerticalScrollindicator: false,
+  //contentContainerStyle: {paddingHorizontal: 20},
+  showsVerticalScrollIndicator: false,
 })`
   margin-top: 20px;
 `;

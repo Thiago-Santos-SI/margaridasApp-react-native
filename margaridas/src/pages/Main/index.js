@@ -27,6 +27,7 @@ export default function Main({navigation}) {
     const [repositories, setRepositories] = useState('');
     const [repositoriesTint, setRepositoriesTint] = useState('');
     const [tinta, setTinta] = useState('');
+    const [count, setCount] = useState('');
 
 
     const saveRepository = async (valueInputName, valueInputQuant, valueInputPrice, valuePicker) => {
@@ -73,6 +74,20 @@ export default function Main({navigation}) {
             console.log('Algo de errado não esta certo', err);
         }
     }
+
+    useEffect(()=>{
+        async function CheckItem(){
+            const realm = await getRealm()
+            const data = realm.objects('Repository')
+            const val = data.length;
+            if (val < 1){
+                setCount('')
+            }else {
+                setCount('Materiais')
+            }
+        }
+        CheckItem()
+    },[handleAddRepository])
 
 
     useEffect(() => {
@@ -128,11 +143,10 @@ export default function Main({navigation}) {
                     keyboardType="numeric"
                 />
 
-                <Picker
+                <Picker style={styles.picker}
                     selectedValue={selectedValue}
-                    style={styles.picker}
-                    onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
+                    onValueChange ={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+
                     <Picker.Item label="metro" value="metro" />
                     <Picker.Item label="centimetro" value="centimetro" />
                 </Picker>
@@ -157,7 +171,7 @@ export default function Main({navigation}) {
                 </Button>
 
             </Form2>
-            <Title> Materiais</Title>
+            <Title> {count}</Title>
             <List
                 keyboardShouldPersistTaps="handle"
                 dataTint={repositoriesTint}
@@ -188,7 +202,6 @@ const styles = StyleSheet.create({
         width: 150,
         backgroundColor:'#7a36b2',
         color:'#FFF',
-
     }
 });
 

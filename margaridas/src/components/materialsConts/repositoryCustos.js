@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Button} from 'react-native-elements';
-import {Keyboard, StyleSheet, Text} from 'react-native'
+import {Keyboard, StyleSheet, Text, Dimensions, View} from 'react-native'
 import {
     NameItem,
-    ContainerCustos, NameCustos, NameCusto, NameCheck
+    ContainerCustos, NameCustos, NameCusto, NameCheck, Name, ContainerIcons, ContainerCustoProduto
 } from '../repository/styles';
 import {
-    Form, InputCustos,
+    Container,
+    Form, InputCustos, Title,
 } from "../../pages/Main/styles";
 
 import CheckBox from '@react-native-community/checkbox';
@@ -20,6 +21,7 @@ const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
     const [isSelected, setSelection] = useState(false);
     const [check, setCheck] = useState(true);
 
+
     useEffect(() => {
         async function loadRepository() {
             const realm = await getRealm();
@@ -29,7 +31,7 @@ const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
                 setCheck(true)
             }else {
                 setCheck(false)
-                }
+            }
         }
         loadRepository();
     }, [addPrecoTotal]);
@@ -78,10 +80,32 @@ const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
     }
 
     return(
-        <ContainerCustos style={styles.view}>
-            <NameItem> {data.name.toUpperCase()}</NameItem>
-            <NameCustos>Quantidade comprada: {data.quantidade.toFixed(2)} {data.unidade} </NameCustos>
-            <NameCustos>preço que comprou: {data.price.toFixed(2)}R$</NameCustos>
+
+        <View style={styles.viewpai}>
+            <ContainerCustos style={styles.view}>
+
+            <NameItem numberOfLines={1}> {data.name.toUpperCase()}</NameItem>
+
+            <View style={{flexDirection: "row"}}>
+
+                <View style={{flex: 1}}>
+
+                    <Name>Quantidade comprada</Name>
+                    <NameCustos style={{color: '#1da835'}}><NameCustos style={{fontSize: 25 , color:'#1da835'}}> {data.quantidade.toFixed(1)}</NameCustos> {data.unidade} </NameCustos>
+                    <Name>Preço que comprou</Name>
+                    <NameCustos style={{color: '#1557ba', fontSize: 22}}>R$ {data.price.toFixed(1)}</NameCustos>
+
+                </View>
+
+                <ContainerCustoProduto>
+
+                    <Name>Custo do produto</Name>
+                    <NameCusto style={{color: '#dc2b2b', fontSize: 23}}>R$ {Number(result).toFixed(2)}</NameCusto>
+
+                </ContainerCustoProduto>
+
+            </View>
+
             <Form>
             <CheckBox
                 disabled={check}
@@ -106,16 +130,16 @@ const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
                             UpdateFunctionVenda();
                         }}}
             />
-
-
-            <NameCusto>Custo do produto: {Number(result).toFixed(2)} R$ </NameCusto>
         </ContainerCustos>
+        </View>
     )
 };
 
+export const screenWidth = Dimensions.get('screen').width
 
 const styles = StyleSheet.create({
     view:{
+        width: screenWidth - 36,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -123,8 +147,10 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.36,
         shadowRadius: 6.68,
-
         elevation: 11
+    },
+    viewpai:{
+        height: 'auto'
     }
 })
 

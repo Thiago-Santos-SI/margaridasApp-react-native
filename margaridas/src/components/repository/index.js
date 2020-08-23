@@ -47,8 +47,7 @@ export default function repository({data, deleteItem}){
     return(
         <Animated.View style={[{transform: [{translateY: offset}]}]}>
         <Container style={styles.view}>
-            <View style={styles.viewRow}>
-                <View style={{maxWidth: '80%'}}>
+                <View style={{flex: 1}}>
                     <Name>Nome</Name>
                     <NameGrande>{data.name.toUpperCase()}</NameGrande>
 
@@ -59,22 +58,22 @@ export default function repository({data, deleteItem}){
                     <NameGrande>{data.price.toFixed(2)}R$</NameGrande>
                 </View>
 
-                <View>
-                    <Icon
-                        raised
-                        name='trash'
-                        type='font-awesome'
-                        color='#f50'
-                        onPress={() => {setDefaultAnimationDialog(true)}}
-                    />
-                    <Icon
-                        raised
-                        name="edit"
-                        type='font-awesome'
-                        color='#256FC7'
-                        onPress={() => {setSlideAnimation2(true)}}/>
-                </View>
-            </View>
+                <ContainerIcons>
+                        <Icon
+                            raised
+                            name='trash'
+                            type='font-awesome'
+                            color='#f50'
+                            onPress={() => {setDefaultAnimationDialog(true)}}
+                        />
+                        <Icon
+                            raised
+                            name="edit"
+                            type='font-awesome'
+                            color='#256FC7'
+                            onPress={() => {setSlideAnimation2(true)}}/>
+                </ContainerIcons>
+
 
 
 
@@ -179,10 +178,4 @@ const styles = StyleSheet.create({
         elevation: 4,
         justifyContent: 'space-between'
     },
-    viewRow:{
-        flexDirection: 'row'
-    },
-    icons:{
-        marginLeft: 50
-    }
 })

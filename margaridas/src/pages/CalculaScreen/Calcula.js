@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Button} from 'react-native-elements';
-import {Alert, Text, View, KeyboardAvoidingView, StyleSheet, Keyboard} from 'react-native';
+import {Alert, Text, View, KeyboardAvoidingView, StyleSheet, Keyboard, Animated} from 'react-native';
 import {
     ContainerCustos,
     Form2,
@@ -15,7 +15,7 @@ import {
     FormListTint,
     InputTint,
     PequenoTitleTotal,
-    TitleVenda
+    TitleVenda, ContainerCardsList, FormButton, FormButtonApp, FormButtonAndIcon
 } from '../Main/styles';
 import RepositoryCustos, {screenWidth} from "../../components/materialsConts/repositoryCustos";
 
@@ -29,6 +29,7 @@ import {
     NameQuantidade
 } from "../../components/repository/styles";
 import Slider from '@react-native-community/slider';
+import {set} from "react-native-reanimated";
 
 
 export default function Calcula({route}) {
@@ -48,6 +49,13 @@ export default function Calcula({route}) {
     const [tintForFunction, setTintForFunction] = useState('');
     const [hideCard, setHideCard] = useState(true);
 
+
+    async function HideCardFalse(){
+        setHideCard(false)
+    }
+    async function HIdeCArdtrue(){
+        setHideCard(true)
+    }
 
 
     useEffect(()=>{
@@ -111,9 +119,14 @@ export default function Calcula({route}) {
             const realm = await getRealm()
             const data = realm.objects('Repository')
             const val = data.length;
-            setCount("você tem "+ val +" material")
             if (val===0){
                 setCount("vc não cadastrou nenhum material ainda")
+            }
+            if (val===1){
+                setCount("você tem "+ val +" material")
+            }else {
+                setCount("você tem "+ val +" materiais")
+
             }
             let valueTintInDataBase = realm.objects('Tinta');
             for (let p of valueTintInDataBase) {
@@ -243,11 +256,12 @@ export default function Calcula({route}) {
         <KeyboardAvoidingView
             style={{flex: 1}}
         >
-        <ContainerCustos >
+        <ContainerCustos>
             <TitleCount>{count}</TitleCount>
-            <List
+            <ContainerCardsList>
+                <List
                 snapToInterval={screenWidth}
-                horizontal={true}
+                horizontal={false}
                 keyboardShouldPersistTaps="handle"
                 dataTint={tint}
                 data={repositories}
@@ -263,44 +277,71 @@ export default function Calcula({route}) {
                     />
                 )}
             />
+            </ContainerCardsList>
+            <FormButton>
+                <Button title=''
+                        icon={
+                            <Icon
+                                type='font-awesome'
+                                name="eye"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        onPress={HIdeCArdtrue}>
+                </Button>
+
+
+            </FormButton>
 
             {hideCard && (
-                <FormResults>
-                <Form2>
-                    <Button
-                        title="Definir valor de lucro"
-                        type="outline"
-                        raised={true}
-                        color='#7a36b2'
-                        onPress={() => setSlideAnimation(true)}
+                    <FormResults style={styles.shadow}>
+                <FormButtonAndIcon>
+                    <View style={{flex: 1}}>
+                        <Button
+                            title="Definir valor de lucro"
+                            color='#333'
+                            type={"outline"}
+                            onPress={() => setSlideAnimation(true)}>
+                        </Button>
+                    </View>
+                    <Text>   </Text>
+                    <Icon
+                        type='font-awesome'
+                        name="eye-slash"
+                        size={30}
+                        color="#333"
+                        onPress={HideCardFalse}
                     />
-                    <Text>  </Text>
-                    <Button
-                        title="Definir valor da tinta"
-                        type="outline"
-                        raised={true}
-                        color='#256FC7'
-                        onPress={() => setSlideAnimation2(true)}
-                    />
+                    <Text>   </Text>
+                    <View style={{flex:1}}>
+                        <Button
+                            title="Definir valor da tinta"
+                            color='#256FC7'
+                            type={"outline"}
+                            onPress={() => setSlideAnimation2(true)}
+                        />
+                    </View>
 
-                </Form2>
-                <View style={{flexDirection: "row"}}>
+
+                </FormButtonAndIcon>
+                <View style={{flexDirection: "row", justifyContent: "center"}}>
 
                     <ContainerValorTotal>
                         <PequenoTitleTotal> Valor total</PequenoTitleTotal>
-                        <TitleTotal>R$ {total.toFixed(1)} </TitleTotal>
+                        <TitleTotal style={{fontSize: 25 }}>R$ {total.toFixed(1)} </TitleTotal>
                     </ContainerValorTotal>
-
                     <ContainerPrecoVenda>
                         <PequenoTitleTotal>Preço de venda</PequenoTitleTotal>
-                        <TitleVenda>R$ {venda}</TitleVenda>
+                        <TitleVenda style={{fontSize: 25 }}>R$ {venda}</TitleVenda>
                     </ContainerPrecoVenda>
 
                 </View>
 
                 <TitlePorcentagem>Seu valor de lucro atual: {porcentagem} %</TitlePorcentagem>
 
-            </FormResults>)}
+            </FormResults>
+                )}
 
             <Dialog
                 onDismiss={() => {
@@ -505,6 +546,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
 
     },
+    shadow:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 10,
+            height: 12,
+        },
+        shadowOpacity: 0.0,
+        shadowRadius: 16.00,
+
+        elevation: 200,
+    },
+
 });
 
 Calcula.navigationOptions = {

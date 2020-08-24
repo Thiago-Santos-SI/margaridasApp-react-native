@@ -25,16 +25,16 @@ export const ContainerCustoProduto = styled.View`
 
 export const ContainerPrecoVenda = styled.View`
   display: flex;
-  margin-right: 50px;
-    margin-top: 10px;
-
+  margin-right: 20px;
+  margin-top: 10px;
+  border-radius: 6px;
+  
 `;
 
 export const ContainerValorTotal = styled.View`
   flex: 1;
   margin-right: 50px;
   margin-top: 10px;
-
 `;
 
 
@@ -77,7 +77,7 @@ export const NameQuantidade = styled.Text`
 
 export const NameCustos = styled.Text`
   font-weight: bold;
-  font-size: 18px;
+  font-size: 15px;
   color: #333;
   margin-left: 15px;
     margin-top: 5px;

@@ -18,8 +18,19 @@ export const ContainerCustos = styled(LinearGradient).attrs({
   start: {x: 0, y: 0},
   end: {x: 1, y: 1},
 })`
+  
+  height: 20px;
   flex: 1;
 `;
+
+export const ContainerCardsList = styled(LinearGradient).attrs({
+  colors: ['#7159c1', '#9b50c1'],
+  start: {x: 0, y: 0},
+  end: {x: 1, y: 1},
+})`
+  max-height: 90%;
+`;
+
 
 export const Title = styled.Text`
   font-size: 26px;
@@ -73,6 +84,22 @@ export const FormResults = styled.View`
   bottom: 0;
   right: 0;
   left: 0;
+  border-width: 2px;
+  border-color: #7159c1;
+`;
+
+export const FormButton = styled.View`
+  flex-direction: row;
+  margin-top: 100px;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+`;
+
+export const FormButtonApp = styled.View`
+  justify-content: center;
 `;
 
 
@@ -90,6 +117,14 @@ export const FormListTint = styled.View`
 
 
 export const Form2 = styled.View`
+  flex-direction: row;
+  margin-top: 10px;
+  padding: 0 20px;
+  justify-content: center;
+
+`;
+
+export const FormButtonAndIcon = styled.View`
   flex-direction: row;
   margin-top: 10px;
   padding: 0 20px;

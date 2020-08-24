@@ -91,7 +91,7 @@ const repositoryCustos = ({data, addPrecoTotal, UpdateFunctionVenda}) => {
                 <View style={{flex: 1}}>
 
                     <Name>Quantidade comprada</Name>
-                    <NameCustos style={{color: '#1da835'}}><NameCustos style={{fontSize: 25 , color:'#1da835'}}> {data.quantidade.toFixed(1)}</NameCustos> {data.unidade} </NameCustos>
+                    <NameCustos numberOfLines={1} style={{color: '#1da835'}}><NameCustos numberOfLines={1} style={{fontSize: 22 , color:'#1da835'}}> {data.quantidade.toFixed(1)}</NameCustos> {data.unidade}</NameCustos>
                     <Name>Preço que comprou</Name>
                     <NameCustos style={{color: '#1557ba', fontSize: 22}}>R$ {data.price.toFixed(1)}</NameCustos>
 
@@ -142,12 +142,12 @@ const styles = StyleSheet.create({
         width: screenWidth - 36,
         shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+            width: 10,
             height: 5,
         },
-        shadowOpacity: 0.36,
-        shadowRadius: 6.68,
-        elevation: 11
+        shadowOpacity: 0,
+        shadowRadius: 1.68,
+        elevation: 100
     },
     viewpai:{
         height: 'auto'
